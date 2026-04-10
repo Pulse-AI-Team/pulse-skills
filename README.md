@@ -1,167 +1,145 @@
-# Pulse Agent Skills
+# Pulse Skills
 
-> Share your AI agent securely with anyone. Let others talk to your agent via a link — you control exactly what it can share, create, and edit.
+> A skill suite for sharing and maintaining Pulse AI agents.
+
+This repository is intentionally designed as **one big umbrella skill** plus **modular sub-skills**:
+
+- `SKILL.md` (root) = **`pulse`** umbrella skill (all-in-one)
+- `skills/*/SKILL.md` = focused skills (`onboarding`, `context-sync`, `share-agent`, etc.)
+
+## Why this structure exists
+
+Most users want one skill that "just works" (`pulse`).
+Advanced users want focused modules they can install separately.
+
+This repo supports both:
+
+1. **All-in-one mode**: install root `pulse` skill
+2. **Composable mode**: install selected sub-skills
 
 ## Quick Start
 
-### 1. Install
+### 1) Set your API key
+
+Generate at: https://www.aicoo.io/settings/api-keys
 
 ```bash
-# Clone into your Claude Code plugins directory
-git clone https://github.com/Pulse-AI-Team/pulse-skills.git \
-  ~/.claude/plugins/pulse-skills
-
-# Restart Claude Code
+export PULSE_API_KEY="pulse_sk_live_xxxxxxxx"
 ```
 
-### 2. Get your API key
-
-1. Go to [aicoo.io/settings/api-keys](https://www.aicoo.io/settings/api-keys)
-2. Click "Generate Token"
-3. Copy the `pulse_sk_live_...` key
-4. See [API docs](https://www.aicoo.io/docs/api) for full reference
-
-### 3. Set your token
+### 2) Install umbrella skill (`pulse`)
 
 ```bash
-export PULSE_API_KEY=pulse_sk_live_xxxxxxxx
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo Pulse-AI-Team/pulse-skills \
+  --path . \
+  --name pulse
 ```
 
-Or add to your `.env` / shell profile for persistence.
+### 3) Restart Codex
 
-### 4. Use it
+Codex loads new skills on startup.
 
-Just talk to Claude naturally:
+## Install modular skills (optional)
 
-```
-> "Set up Pulse and teach my agent about me"
-> "Sync my docs folder and share it with investors"
-> "Create a share link with write access for my team"
-> "Save a snapshot of my roadmap note before editing"
-> "Set up auto-sync to keep my agent updated"
-> "Check what my investor link is sharing — any sensitive data?"
-> "How many people have talked to my shared agent?"
+If you want smaller building blocks instead of one umbrella skill:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo Pulse-AI-Team/pulse-skills \
+  --path skills/onboarding skills/context-sync skills/share-agent skills/examine-sandbox skills/snapshots skills/autonomous-sync
 ```
 
-Skills activate automatically when relevant.
+Recommended modular stack:
 
-## Available Skills
+- `onboarding`
+- `context-sync`
+- `share-agent`
+- `examine-sandbox`
+- `snapshots`
+- `autonomous-sync`
 
-| Skill | What it does |
-|-------|-------------|
-| **onboarding** | Guided first-time setup: API key, workspace init, local exploration, knowledge sync |
-| **context-sync** | Upload files, search/read/create/edit notes, browse folders, manage versions |
-| **share-agent** | Create shareable links with fine-grained access (notes read/write/edit, calendar) |
-| **examine-sandbox** | Inspect what data a share link exposes, audit permissions, scan for sensitive content |
-| **snapshots** | Save, list, and restore note versions — backup before edits, rollback mistakes |
-| **autonomous-sync** | Auto-update triggers: CRON, /loop, hooks, file watchers, post-chat sync |
+## Runtime Setup
 
-## How It Works
+### Claude Code
 
+- Integration reference: `CLAUDE.md`
+- Hook templates: `hooks/claude-code/`
+
+### Codex
+
+- Install root skill:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo Pulse-AI-Team/pulse-skills \
+  --path . \
+  --name pulse
 ```
-You (CLI) ──→ Pulse API ──→ Your Agent (with sandboxed context)
-                                  │
-                        Guest opens link ──→ Talks to your agent
-                                             (only sees what you allowed)
-                                             (can create/edit if permitted)
+
+### OpenClaw
+
+- Hook reference: `hooks/openclaw/HOOK.md`
+- Handler source: `hooks/openclaw/handler.ts`
+
+## Skill Map (Umbrella + Modules)
+
+| Skill | Role |
+|---|---|
+| `pulse` (root) | Umbrella skill covering setup, sync, sharing, snapshots, and automation |
+| `onboarding` | First-time setup and API key/bootstrap flow |
+| `context-sync` | Sync/search/read/create/edit workspace context |
+| `share-agent` | Create/manage share links and permissions |
+| `examine-sandbox` | Audit what a share link can access |
+| `snapshots` | Save/list/restore note versions |
+| `autonomous-sync` | Auto-sync patterns via hooks/cron/loop |
+
+## Mental Model
+
+```text
+User intent
+   -> pulse (umbrella) or specific module
+      -> Pulse API (tools + REST)
+         -> workspace context + permissions + shared agent links
 ```
 
-1. **Onboard**: Register API key and teach your agent about you
-2. **Sync context**: Upload files, notes, or text to Pulse
-3. **Create a link**: Choose scope, calendar access, and notes permissions
-4. **Share it**: Send the link to anyone — no sign-up required
-5. **Keep updated**: Set up auto-sync via /loop, CRON, or hooks
-6. **Monitor**: Check analytics and audit what's being shared
+## Repo Layout
 
-## Project Structure
-
-```
+```text
 pulse-skills/
-├── .claude-plugin/
-│   └── plugin.json
-├── skills/
-│   ├── onboarding/           # First-time setup guide
-│   │   ├── SKILL.md
-│   │   └── examples/
-│   ├── context-sync/         # Knowledge sync & management
-│   │   ├── SKILL.md
-│   │   ├── reference/API.md
-│   │   └── examples/
-│   ├── share-agent/          # Share link creation & management
-│   │   ├── SKILL.md
-│   │   ├── reference/API.md
-│   │   └── examples/
-│   ├── examine-sandbox/      # Privacy audit & inspection
-│   │   ├── SKILL.md
-│   │   ├── reference/API.md
-│   │   └── examples/
-│   ├── snapshots/            # Note versioning
-│   │   └── SKILL.md
-│   └── autonomous-sync/      # Auto-update triggers
-│       └── SKILL.md
-├── hooks/
-│   ├── claude-code/          # Hook configs for Claude Code
-│   └── openclaw/             # Hook handler for OpenClaw
-│       ├── HOOK.md
-│       ├── handler.ts
-│       └── handler.js
-├── scripts/
-│   ├── pulse-activator.sh    # UserPromptSubmit hook
-│   ├── sync-detector.sh      # PostToolUse hook
-│   └── pulse-sync.sh         # Standalone CRON sync script
-├── CLAUDE.md
-├── SKILL.md
-├── README.md
-└── LICENSE
+|-- SKILL.md                      # umbrella skill: pulse
+|-- CLAUDE.md                     # Claude-focused integration notes
+|-- README.md
+|-- skills/
+|   |-- onboarding/
+|   |-- context-sync/
+|   |-- share-agent/
+|   |-- examine-sandbox/
+|   |-- snapshots/
+|   `-- autonomous-sync/
+|-- scripts/
+|   |-- pulse-activator.sh
+|   |-- sync-detector.sh
+|   `-- pulse-sync.sh
+`-- hooks/
+    |-- claude-code/
+    `-- openclaw/
 ```
 
-## Automation Setup
+## API Basics
 
-### Claude Code (hooks)
+- Base URL: `https://www.aicoo.io/api/v1`
+- Auth header: `Authorization: Bearer $PULSE_API_KEY`
+- API docs: https://www.aicoo.io/docs/api
 
-```json
-// .claude/settings.json
-{
-  "hooks": {
-    "UserPromptSubmit": [{
-      "matcher": "",
-      "hooks": [{"type": "command", "command": "./pulse-skills/scripts/pulse-activator.sh"}]
-    }],
-    "PostToolUse": [{
-      "matcher": "Write|Edit",
-      "hooks": [{"type": "command", "command": "./pulse-skills/scripts/sync-detector.sh"}]
-    }]
-  }
-}
-```
+## For maintainers
 
-### Claude Code (/loop)
+When adding or changing capabilities:
 
-```
-/loop 30m sync any new knowledge to Pulse
-```
-
-### OpenClaw (hook + CRON)
-
-```bash
-cp -r pulse-skills/hooks/openclaw ~/.openclaw/hooks/pulse-sync
-openclaw hooks enable pulse-sync
-```
-
-### Standalone (cron)
-
-```bash
-# crontab -e
-0 9 * * * /path/to/pulse-skills/scripts/pulse-sync.sh /path/to/project
-```
-
-## API Base URL
-
-```
-https://www.aicoo.io/api/v1
-```
-
-All requests require `Authorization: Bearer <PULSE_API_KEY>`.
+1. Update the relevant module in `skills/*/SKILL.md`
+2. Update root `SKILL.md` if umbrella behavior changes
+3. Keep examples aligned with current API docs (`/docs/api`)
+4. Update this README when install/runtime behavior changes
 
 ## License
 
