@@ -152,6 +152,76 @@ curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
 
 ---
 
+## Phase 3.5: Initialize Identity Files
+
+Identity files give your shared agent a **soul**, not just data. They live in `memory/self/` and define who the agent is, who it represents, and how it behaves.
+
+### The three identity files
+
+| File | Purpose | Think of it as... |
+|------|---------|-------------------|
+| `memory/self/COO.md` | Agent's personality, voice, values | The agent's soul |
+| `memory/self/USER.md` | Who you are — role, background, expertise | The agent's knowledge of you |
+| `memory/self/POLICY.md` | Universal behavioral rules for all interactions | The agent's code of conduct |
+
+### Guide the user through each file
+
+**COO.md — The Agent's Soul:**
+
+Ask: *"How should your agent talk? What's its personality? Is it formal or casual, direct or diplomatic, enthusiastic or measured?"*
+
+```bash
+curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [{
+      "path": "memory/self/COO.md",
+      "content": "# Agent Personality\n\nYou are [User Name]'\''s AI Chief Operating Officer.\n\n## Voice\n- [Casual/formal/technical/friendly]\n- [Direct/diplomatic/enthusiastic]\n\n## Values\n- [What matters to the user — efficiency, creativity, thoroughness]\n\n## How You Introduce Yourself\n- [A brief intro the agent gives when meeting someone new]"
+    }]
+  }' | jq .
+```
+
+**USER.md — Who You Represent:**
+
+Ask: *"Tell me about yourself — what should someone who talks to your agent learn about you?"*
+
+```bash
+curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [{
+      "path": "memory/self/USER.md",
+      "content": "# [User Name]\n\n## Role\n[What you do]\n\n## Background\n[Where you come from, expertise]\n\n## Current Focus\n[What you are working on now]\n\n## Contact\n[How people should reach you]"
+    }]
+  }' | jq .
+```
+
+**POLICY.md — Universal Rules:**
+
+Ask: *"Are there things your agent should always do or never do, regardless of who's asking?"*
+
+```bash
+curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [{
+      "path": "memory/self/POLICY.md",
+      "content": "# Base Policy\n\n## Always\n- Be helpful and professional\n- Share what is in the public knowledge base\n\n## Never\n- Share specific financial numbers unless in the Investors folder\n- Make commitments on behalf of [User Name]\n- Share personal contact info unless explicitly included in notes"
+    }]
+  }' | jq .
+```
+
+### Identity files are optional
+
+The user can skip any or all of these. The agent will fall back to a default identity based on account settings. But each file dramatically improves the shared agent experience — from a generic "AI assistant that searches your documents" to a **personality-driven agent that feels like a real person**.
+
+Encourage the user to write at least COO.md and USER.md. POLICY.md is most useful once they start sharing with different audiences.
+
+---
+
 ## Phase 4: Organize into Folders
 
 Create folders that match the user's mental model:

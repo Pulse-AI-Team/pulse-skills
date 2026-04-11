@@ -329,6 +329,56 @@ curl -s -X POST "$PULSE_BASE/tools" \
 
 ---
 
+## Capability 5: Agent Identity System
+
+Give your shared agent a **soul** — not just data. Identity files live in `memory/self/` and define who the agent is, who it represents, and how it behaves.
+
+### Identity Files
+
+| File | Path | Purpose |
+|------|------|---------|
+| COO.md | `memory/self/COO.md` | Agent's personality, voice, values — its "soul" |
+| USER.md | `memory/self/USER.md` | Who you are — role, background, expertise |
+| POLICY.md | `memory/self/POLICY.md` | Universal behavioral rules for all shared links |
+
+### Initialize identity files
+
+```bash
+curl -s -X POST "$PULSE_BASE/accumulate" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [
+      {"path": "memory/self/COO.md", "content": "# Agent Personality\n\nYou are [Name]'\''s AI Chief Operating Officer.\n\n## Voice\n- Direct and technically sharp\n- Warm but efficient\n\n## Values\n- Accuracy over speed\n- Proactive, not passive"},
+      {"path": "memory/self/USER.md", "content": "# [Name]\n\n## Role\nFounder & CEO at [Company]\n\n## Background\n[Education, experience]\n\n## Current Focus\n[What you are working on]"},
+      {"path": "memory/self/POLICY.md", "content": "# Base Policy\n\n## Always\n- Be professional and helpful\n- Share public knowledge freely\n\n## Never\n- Share specific financial numbers\n- Make commitments on behalf of the owner"}
+    ]
+  }' | jq .
+```
+
+### Per-Link Policy
+
+When a share link is created, a **link note** is auto-generated in the `links/` folder (e.g., `links/For-Investors_xK9mPq2RvT`). Edit its `## Policy` section to customize that specific link's agent behavior:
+
+```bash
+# Find link note
+curl -s -X POST "$PULSE_BASE/tools" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"tool": "search_notes", "params": {"query": "For-Investors", "folderName": "links"}}' | jq .
+```
+
+Policy priority order: **COO.md → USER.md → base POLICY.md → link policy** (link policy overrides base if conflicting).
+
+### Runtime behavior
+
+- **With identity files**: Agent has personality, knows who it represents, follows custom rules — feels like talking to a real person
+- **Without identity files**: Falls back to default "AI COO" identity from account settings — functional but generic
+
+Identity files are optional but recommended. Set up with the **onboarding** skill.
+
+---
+
 ## Autonomous Update Patterns
 
 Keep your agent's knowledge current automatically.
