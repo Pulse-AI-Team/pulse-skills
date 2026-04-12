@@ -163,6 +163,48 @@ curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
 | `list_snapshots` | List all snapshots for a note | read |
 | `restore_snapshot` | Restore a note from a snapshot (auto-backup first) | write |
 
+## Special Folder: `memory/self/` (Identity Files)
+
+The `memory/self/` folder contains identity files that power your shared agent's personality. These are **not regular notes** — the agent loads them at runtime to define its behavior.
+
+| File | Purpose |
+|------|---------|
+| `memory/self/COO.md` | Agent's personality, voice, values |
+| `memory/self/USER.md` | Who you are — role, background, expertise |
+| `memory/self/POLICY.md` | Universal behavioral rules for all shared links |
+
+Sync them via accumulate (nested paths auto-create folders):
+
+```bash
+curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [
+      {"path": "memory/self/COO.md", "content": "# Agent Personality\n\nYou are direct, technically sharp, and warm..."},
+      {"path": "memory/self/USER.md", "content": "# Jane Doe\n\nFounder & CEO of Acme Corp..."},
+      {"path": "memory/self/POLICY.md", "content": "# Base Policy\n\n## Always\n- Be professional\n\n## Never\n- Share financials"}
+    ]
+  }' | jq .
+```
+
+## Special Folder: `links/` (Per-Link Policy)
+
+The `links/` folder is auto-populated when you create share links. Each link gets a markdown note titled `<Label>_<token>` with a `## Policy` section you can edit to customize that link's agent behavior.
+
+You can also edit link notes via the tools API:
+
+```bash
+curl -s -X POST "https://www.aicoo.io/api/v1/tools" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"tool": "search_notes", "params": {"query": "For-Investors", "folderName": "links"}}' | jq .
+```
+
+See the **share-agent** skill for details on per-link policy customization.
+
+---
+
 ## When to Use Tools vs Accumulate
 
 | Scenario | Use |

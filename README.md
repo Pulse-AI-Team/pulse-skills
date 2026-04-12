@@ -68,7 +68,7 @@ If you want smaller building blocks instead of one umbrella skill:
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo Pulse-AI-Team/pulse-skills \
-  --path skills/onboarding skills/context-sync skills/share-agent skills/examine-sandbox skills/snapshots skills/autonomous-sync
+  --path skills/onboarding skills/context-sync skills/share-agent skills/examine-sandbox skills/snapshots skills/autonomous-sync skills/talk-to-agent
 ```
 
 **Claude Code / OpenClaw / Other:**
@@ -82,6 +82,7 @@ Recommended modular stack:
 - `examine-sandbox`
 - `snapshots`
 - `autonomous-sync`
+- `talk-to-agent`
 
 ## Runtime Setup
 
@@ -151,6 +152,7 @@ openclaw hooks enable pulse-sync
 | `examine-sandbox` | Audit what a share link can access |
 | `snapshots` | Save/list/restore note versions |
 | `autonomous-sync` | Auto-sync patterns via hooks/cron/loop |
+| `talk-to-agent` | Talk to another person's Pulse agent via share link |
 
 ## Mental Model
 
@@ -174,7 +176,8 @@ pulse-skills/
 |   |-- share-agent/
 |   |-- examine-sandbox/
 |   |-- snapshots/
-|   `-- autonomous-sync/
+|   |-- autonomous-sync/
+|   `-- talk-to-agent/
 |-- scripts/
 |   |-- pulse-activator.sh
 |   |-- sync-detector.sh

@@ -1,6 +1,6 @@
 ---
 name: pulse
-description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', or any mention of letting others talk to their AI agent."
+description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, talk to someone else's agent via a share link, check their agent network, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'talk to their agent', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Pulse links."
 metadata:
   author: systemind
   version: "1.0.0"
@@ -255,7 +255,7 @@ curl -s -X POST "$PULSE_BASE/share/create" \
 | `access` | `"read"`, `"read_calendar"`, `"read_calendar_write"` | Calendar access level |
 | `notesAccess` | `"read"`, `"write"`, `"edit"` | Notes permission (default: `"read"`) |
 | `label` | string | Friendly name |
-| `expiresIn` | `"1h"`, `"24h"`, `"7d"`, `"30d"`, `null` | Expiration |
+| `expiresIn` | `"1h"`, `"24h"`, `"7d"`, `"30d"`, `"90d"`, `"never"` | Expiration (default: 30 days) |
 | `folderIds` | int array | Required when scope is `"folders"` |
 
 **Notes access levels:**
@@ -329,6 +329,56 @@ curl -s -X POST "$PULSE_BASE/tools" \
 
 ---
 
+## Capability 5: Agent Identity System
+
+Give your shared agent a **soul** — not just data. Identity files live in `memory/self/` and define who the agent is, who it represents, and how it behaves.
+
+### Identity Files
+
+| File | Path | Purpose |
+|------|------|---------|
+| COO.md | `memory/self/COO.md` | Agent's personality, voice, values — its "soul" |
+| USER.md | `memory/self/USER.md` | Who you are — role, background, expertise |
+| POLICY.md | `memory/self/POLICY.md` | Universal behavioral rules for all shared links |
+
+### Initialize identity files
+
+```bash
+curl -s -X POST "$PULSE_BASE/accumulate" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [
+      {"path": "memory/self/COO.md", "content": "# Agent Personality\n\nYou are [Name]'\''s AI Chief Operating Officer.\n\n## Voice\n- Direct and technically sharp\n- Warm but efficient\n\n## Values\n- Accuracy over speed\n- Proactive, not passive"},
+      {"path": "memory/self/USER.md", "content": "# [Name]\n\n## Role\nFounder & CEO at [Company]\n\n## Background\n[Education, experience]\n\n## Current Focus\n[What you are working on]"},
+      {"path": "memory/self/POLICY.md", "content": "# Base Policy\n\n## Always\n- Be professional and helpful\n- Share public knowledge freely\n\n## Never\n- Share specific financial numbers\n- Make commitments on behalf of the owner"}
+    ]
+  }' | jq .
+```
+
+### Per-Link Policy
+
+When a share link is created, a **link note** is auto-generated in the `links/` folder (e.g., `links/For-Investors_xK9mPq2RvT`). Edit its `## Policy` section to customize that specific link's agent behavior:
+
+```bash
+# Find link note
+curl -s -X POST "$PULSE_BASE/tools" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"tool": "search_notes", "params": {"query": "For-Investors", "folderName": "links"}}' | jq .
+```
+
+Policy priority order: **COO.md → USER.md → base POLICY.md → link policy** (link policy overrides base if conflicting).
+
+### Runtime behavior
+
+- **With identity files**: Agent has personality, knows who it represents, follows custom rules — feels like talking to a real person
+- **Without identity files**: Falls back to default "AI COO" identity from account settings — functional but generic
+
+Identity files are optional but recommended. Set up with the **onboarding** skill.
+
+---
+
 ## Autonomous Update Patterns
 
 Keep your agent's knowledge current automatically.
@@ -375,6 +425,68 @@ See the **autonomous-sync** skill for full details on all trigger strategies.
 
 ---
 
+## Capability 6: Talk to Another Agent
+
+Communicate with someone else's Pulse agent through their share link. No API key needed — share links are public.
+
+### Inspect a link (metadata only, no session created)
+
+```bash
+curl -s "https://www.aicoo.io/api/chat/guest-v04?token=<TOKEN>&meta=true" | jq .
+```
+
+Returns: `agentName`, `ownerName`, `capabilities`, `messageLimit`.
+
+### Send a message (JSON mode — recommended for agents)
+
+```bash
+curl -s -X POST "https://www.aicoo.io/api/chat/guest-v04" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "token": "<TOKEN>",
+    "message": "What is Alice working on?",
+    "stream": false
+  }' | jq .
+```
+
+Returns: `{sessionKey, agentName, ownerName, response, mode, elapsedMs}`.
+
+Continue a conversation by passing `sessionKey` in subsequent requests.
+
+See the **talk-to-agent** skill for full details and patterns.
+
+---
+
+## Capability 7: Network Discovery
+
+See your agent's share links and who's visiting them.
+
+### Via Tools API
+
+```bash
+curl -s -X POST "$PULSE_BASE/tools" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"tool": "list_network", "params": {}}' | jq .
+```
+
+### Via REST API
+
+```bash
+curl -s "$PULSE_BASE/network" \
+  -H "Authorization: Bearer $PULSE_API_KEY" | jq .
+```
+
+Returns:
+- **shareLinks**: all active links with analytics (visitors, sessions, messages)
+- **visitors**: recent guest sessions with activity timestamps
+
+### Manage links via Settings UI
+
+Visit https://www.aicoo.io/settings/links to toggle links active/inactive, view analytics, and check expiration dates.
+
+---
+
 ## Security Rules
 
 - Never expose `PULSE_API_KEY` in outputs or share links
@@ -382,6 +494,7 @@ See the **autonomous-sync** skill for full details on all trigger strategies.
 - The agent refuses questions outside its sandbox boundary
 - All guest conversations are logged in analytics
 - Revoked/expired links immediately cut off access
+- **Links expire after 30 days by default** — use `"expiresIn": "never"` for permanent links
 - Short tokens (10 chars, base62) have ~59 bits of entropy
 - `notesAccess: "write"` only allows creating new notes, not modifying existing ones
 - Always check context status before first share to ensure relevant data is synced
@@ -405,5 +518,13 @@ See the **autonomous-sync** skill for full details on all trigger strategies.
 | `/notes/{id}/snapshots` | GET/POST | List/save snapshots |
 | `/notes/{id}/snapshots/{vid}` | GET | Get single snapshot |
 | `/notes/{id}/snapshots/{vid}/restore` | POST | Restore from snapshot |
+| `/network` | GET | Share links + visitor analytics |
 | `/heartbeat` | POST | Health check |
 | `/briefing` | GET | Daily briefing |
+
+### Guest endpoints (no API key needed)
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/chat/guest-v04?token=X&meta=true` | GET | Inspect agent link metadata |
+| `/api/chat/guest-v04` | POST | Chat with agent (`stream: false` for JSON) |

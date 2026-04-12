@@ -52,7 +52,7 @@ curl -s -X POST "https://www.aicoo.io/api/v1/share/create" \
 | `access` | `"read"`, `"read_calendar"`, `"read_calendar_write"` | Calendar access level |
 | `notesAccess` | `"read"`, `"write"`, `"edit"` | Notes permission level (default: `"read"`) |
 | `label` | any string | Friendly name (e.g., "For investors") |
-| `expiresIn` | `"1h"`, `"24h"`, `"7d"`, `"30d"`, `null` | Expiration (null = no expiry) |
+| `expiresIn` | `"1h"`, `"24h"`, `"7d"`, `"30d"`, `"90d"`, `"never"` | Expiration (default: `"30d"`, `"never"` = no expiry) |
 | `folderIds` | array of ints | Required when `scope` is `"folders"` |
 
 **Response:** Returns `shareLink.url` (e.g., `https://www.aicoo.io/a/xK9mPq2RvT`) and `shareLink.agentUrl`. Present this prominently.
@@ -194,16 +194,76 @@ Then create with folder IDs:
 
 ---
 
+## Agent Identity & Per-Link Policy
+
+When a share link is created, the shared agent automatically loads **identity files** from the owner's workspace:
+
+| File | Path | What it does |
+|------|------|-------------|
+| COO.md | `memory/self/COO.md` | Defines the agent's personality, voice, values (its "soul") |
+| USER.md | `memory/self/USER.md` | Who the owner is — background, role, expertise |
+| POLICY.md | `memory/self/POLICY.md` | Universal behavioral rules for all links |
+| Link Policy | `links/<Label>_<token>.md` | Per-link behavioral rules (overrides base policy) |
+
+### How it works
+
+1. When you create a share link, a **link note** is auto-generated in the `links/` folder titled `<Label>_<token>` (e.g., `For-Investors_xK9mPq2RvT`).
+2. This note contains a `## Policy` section where you write link-specific instructions.
+3. At runtime, the agent loads: COO.md → USER.md → base POLICY.md → link policy (in priority order, link policy overrides base).
+
+### Customize a link's behavior
+
+After creating a link, edit its policy note:
+
+```bash
+# Find the link note
+curl -s -X POST "https://www.aicoo.io/api/v1/tools" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"tool": "search_notes", "params": {"query": "For-Investors", "folderName": "links"}}' | jq .
+
+# Edit the ## Policy section
+curl -s -X POST "https://www.aicoo.io/api/v1/tools" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tool": "edit_note",
+    "params": {
+      "id": 123,
+      "content": "...existing content...\n\n## Policy\n\nYou are talking to potential investors. Be professional and enthusiastic.\nHighlight traction metrics and vision. Do not share specific revenue numbers."
+    }
+  }' | jq .
+```
+
+### Policy examples by audience
+
+| Audience | Policy |
+|----------|--------|
+| Investors | "Be professional and enthusiastic. Highlight traction and vision. Don't share exact revenue." |
+| Collaborators | "Be direct and technical. Share implementation details freely." |
+| Public | "Be friendly and concise. Don't share internal details or roadmap." |
+| Recruiters | "Highlight skills and experience. Share portfolio links." |
+
+### Identity files are optional
+
+If no identity files exist, the agent falls back to default behavior (personality from account settings). But each file dramatically upgrades the experience — from generic Q&A to a personality-driven agent.
+
+Set up identity files with the **onboarding** skill (`memory/self/COO.md`, `USER.md`, `POLICY.md`).
+
+---
+
 ## Security Notes
 
 - Each link has its own isolated sandbox
 - The agent refuses questions outside its sandbox boundary
 - All guest conversations are logged in analytics
 - Revoked/expired links immediately cut off access
-- Links with `expiresIn` are enforced server-side
+- Links expire after 30 days by default; use `"expiresIn": "never"` to opt out
+- Expiration is enforced server-side — expired links return 404 immediately
 - Short tokens (10 chars, base62) have ~59 bits of entropy — unguessable
 - `notesAccess: "write"` only allows creating new notes, not modifying existing ones
 - `notesAccess: "edit"` is the most permissive — use carefully
+- Identity files (COO.md, USER.md, POLICY.md) are read-only to guests — they define behavior but are never exposed verbatim
 
 ---
 
