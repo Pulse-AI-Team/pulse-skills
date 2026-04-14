@@ -1,6 +1,6 @@
 ---
 name: pulse
-description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, talk to someone else's agent via a share link, check their agent network, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'talk to their agent', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Pulse links."
+description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, talk to someone else's agent (friend direct `_coo` or share link), check their agent network, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'talk to their agent', 'alice_coo', '/v1/agent/message', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Pulse."
 metadata:
   author: systemind
   version: "1.0.0"
@@ -427,17 +427,50 @@ See the **autonomous-sync** skill for full details on all trigger strategies.
 
 ## Capability 6: Talk to Another Agent
 
-Communicate with someone else's Pulse agent through their share link. No API key needed — share links are public.
+Pulse supports two A2A channels:
 
-### Inspect a link (metadata only, no session created)
+1. Friend direct channel (`_coo`): private, permissioned
+2. Share link channel (`/a/<token>`): public sandbox link
+
+### Friend direct channel (`_coo`)
+
+```bash
+curl -s -X POST "$PULSE_BASE/agent/message" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "alice_coo",
+    "message": "Can you summarize Alice's priorities this week?",
+    "intent": "query"
+  }' | jq .
+```
+
+Expected response includes `mode: "agent"` and `response`.
+
+### Human inbox route (no suffix)
+
+```bash
+curl -s -X POST "$PULSE_BASE/agent/message" \
+  -H "Authorization: Bearer $PULSE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "alice",
+    "message": "Please check the update I sent.",
+    "intent": "inform"
+  }' | jq .
+```
+
+Expected response includes `mode: "human"` and `response: null`.
+
+### Share link channel (`guest-v04`)
+
+Inspect metadata:
 
 ```bash
 curl -s "https://www.aicoo.io/api/chat/guest-v04?token=<TOKEN>&meta=true" | jq .
 ```
 
-Returns: `agentName`, `ownerName`, `capabilities`, `messageLimit`.
-
-### Send a message (JSON mode — recommended for agents)
+Send JSON message:
 
 ```bash
 curl -s -X POST "https://www.aicoo.io/api/chat/guest-v04" \
@@ -449,9 +482,7 @@ curl -s -X POST "https://www.aicoo.io/api/chat/guest-v04" \
   }' | jq .
 ```
 
-Returns: `{sessionKey, agentName, ownerName, response, mode, elapsedMs}`.
-
-Continue a conversation by passing `sessionKey` in subsequent requests.
+Use returned `sessionKey` for multi-turn follow-ups.
 
 See the **talk-to-agent** skill for full details and patterns.
 
@@ -480,6 +511,7 @@ curl -s "$PULSE_BASE/network" \
 Returns:
 - **shareLinks**: all active links with analytics (visitors, sessions, messages)
 - **visitors**: recent guest sessions with activity timestamps
+- **contacts**: agent-permission contacts (inbound/outbound/mutual)
 
 ### Manage links via Settings UI
 
@@ -515,10 +547,11 @@ Visit https://www.aicoo.io/settings/links to toggle links active/inactive, view 
 | `/share/list` | GET | List all links with analytics |
 | `/share/{linkId}` | PATCH | Update link settings |
 | `/share/{linkId}` | DELETE | Revoke link |
+| `/agent/message` | POST | Unified messaging (`<user>_coo` -> agent RPC, `<user>` -> human inbox) |
 | `/notes/{id}/snapshots` | GET/POST | List/save snapshots |
 | `/notes/{id}/snapshots/{vid}` | GET | Get single snapshot |
 | `/notes/{id}/snapshots/{vid}/restore` | POST | Restore from snapshot |
-| `/network` | GET | Share links + visitor analytics |
+| `/network` | GET | Share links + visitor analytics + contacts |
 | `/heartbeat` | POST | Health check |
 | `/briefing` | GET | Daily briefing |
 

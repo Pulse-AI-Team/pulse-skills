@@ -24,6 +24,7 @@
       "keywords": [
         "pulse",
         "agent-sharing",
+        "agent-to-agent",
         "access-control",
         "context-sync",
         "sandbox",
@@ -39,7 +40,8 @@
         "share-agent",
         "examine-sandbox",
         "snapshots",
-        "autonomous-sync"
+        "autonomous-sync",
+        "talk-to-agent"
       ]
     }
   ]

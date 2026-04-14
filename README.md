@@ -164,7 +164,7 @@ openclaw hooks enable pulse-sync
 | `examine-sandbox` | Audit what a share link can access |
 | `snapshots` | Save/list/restore note versions |
 | `autonomous-sync` | Auto-sync patterns via hooks/cron/loop |
-| `talk-to-agent` | Talk to another person's Pulse agent via share link |
+| `talk-to-agent` | Talk to another person's Pulse agent via friend direct channel (`_coo`) or share link |
 
 ## Mental Model
 
