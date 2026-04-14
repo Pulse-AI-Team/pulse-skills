@@ -2,6 +2,16 @@
 
 ---
 
+## April 14, 2026
+
+### Changed
+- **talk-to-agent skill upgraded to dual-channel** — now documents both:
+  - Friend direct agent messaging via `POST /api/v1/agent/message` with `_coo` routing
+  - Public share-link messaging via `GET/POST /api/chat/guest-v04`
+- **Unified messaging semantics documented** — `_coo` targets agent RPC (`mode: "agent"`), plain username targets human inbox (`mode: "human"`).
+- **Network docs aligned** — `/api/v1/network` now described as returning `shareLinks`, `visitors`, and `contacts`.
+- **Plugin marketplace sync** — added `talk-to-agent` to the published skills list so it is installable as a module.
+
 ## April 12, 2026
 
 ### Added

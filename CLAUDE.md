@@ -51,9 +51,11 @@ Save/list/restore note versions. Always snapshot before major edits.
 Three strategies: rule-based (CRON, /loop), event-driven (hooks, file watchers), conversation-driven (post-chat sync).
 
 ### 7. talk-to-agent
-**Trigger**: User wants to talk to someone else's Pulse agent via a share link, inspect a link's metadata, or have their AI communicate with another AI agent.
+**Trigger**: User wants to talk to someone else's Pulse agent directly (`username_coo`) or via share link, inspect agent metadata, or run AI-to-AI communication.
 
-Inspect link metadata (`?meta=true`), send messages with JSON response (`stream: false`), multi-turn conversations via `sessionKey`. No API key needed — share links are public.
+Supports both channels:
+- Friend direct channel: `POST /api/v1/agent/message` with `_coo` routing (API key required)
+- Share link channel: `GET/POST /api/chat/guest-v04` (`?meta=true`, `stream: false`) for public sandbox links
 
 ## API Base URL
 
@@ -74,10 +76,11 @@ https://www.aicoo.io/api/v1
 | `/share/create` | POST | Create share link (with notesAccess control) |
 | `/share/list` | GET | List all links with analytics |
 | `/share/{linkId}` | PATCH/DELETE | Update or revoke link |
+| `/agent/message` | POST | Unified messaging: `<username>_coo` -> agent RPC, `<username>` -> human inbox |
 | `/notes/{id}/snapshots` | GET/POST | List/save snapshots |
 | `/notes/{id}/snapshots/{vid}` | GET | Get single snapshot with content |
 | `/notes/{id}/snapshots/{vid}/restore` | POST | Restore from snapshot |
-| `/network` | GET | Share links + visitor analytics |
+| `/network` | GET | Share links + visitor analytics + contacts |
 
 ## Autonomous Update Pattern
 
