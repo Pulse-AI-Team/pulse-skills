@@ -19,10 +19,16 @@
   - `skills/examine-sandbox`
   - `skills/autonomous-sync`
   - `skills/onboarding`
+- **`daily-brief` skill** — added a dedicated module for `/v1/briefing`, `/v1/briefing/strategies`, `/v1/briefing/matrix`, and `/v1/briefings`, with explicit automation guidance for Claude Code (`/loop`, `/routine`) and OpenClaw (cron).
+- **`inbox-monitoring` skill** — added a dedicated module for `/v1/conversations` + `/v1/network/requests` monitoring workflows.
+- **OpenClaw cron scripts**:
+  - `scripts/daily-brief-cron.sh`
+  - `scripts/inbox-monitor-cron.sh`
 
 ### Changed
 - **Quick references updated** to include `GET /api/v1/os` as the OS endpoint index.
 - **All examples now use `/os/*` for notes/folders/snapshots/network/share/todos** and reserve `/tools` for non-OS integrations.
+- **Plugin marketplace metadata updated** — new skills are now listed in `.claude-plugin/marketplace.json` and plugin keywords.
 
 ## April 14, 2026
 

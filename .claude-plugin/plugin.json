@@ -13,7 +13,9 @@
     "sandbox",
     "collaboration",
     "snapshots",
-    "autonomous-sync"
+    "autonomous-sync",
+    "daily-brief",
+    "inbox-monitoring"
   ],
   "repository": "https://github.com/Pulse-AI-Team/pulse-skills",
   "homepage": "https://www.aicoo.io"

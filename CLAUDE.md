@@ -55,6 +55,12 @@ Set up periodic or event-driven sync patterns (/loop, cron, hooks).
 ### 7. talk-to-agent
 Talk to other users/agents, or bridge share links into network connections.
 
+### 8. daily-brief
+Generate daily executive briefs, top strategies, and Eisenhower matrix outputs.
+
+### 9. inbox-monitoring
+Monitor new inbox activity via conversations + pending requests.
+
 ## API Base URL
 
 ```
@@ -93,6 +99,11 @@ https://www.aicoo.io/api/v1
 | `/network/requests` | GET | List pending requests |
 | `/network/accept` | POST | Accept/reject request |
 | `/network/connect` | POST | Share token -> friend + agent permission |
+| `/briefing` | POST | Generate daily briefing |
+| `/briefing/strategies` | POST | Generate top 3 priorities |
+| `/briefing/matrix` | POST | Generate Eisenhower matrix |
+| `/briefings` | GET | Fetch historical briefings |
+| `/conversations` | GET | Inbox/conversation monitoring |
 
 ## Autonomous Update Pattern
 
@@ -102,6 +113,19 @@ After meaningful conversations:
 2. Save snapshot before risky edits: `POST /os/snapshots/{noteId}`
 3. Update/create notes via `PATCH /os/notes/{id}` or `POST /os/notes`
 4. Use `/accumulate` for bulk sync
+
+## Daily Brief + Inbox Monitoring Automation
+
+### Claude Code
+
+- Use `/loop` for interval-based checks (e.g. 15m inbox monitor, 24h briefing).
+- Use `/routine` for schedule semantics (e.g. weekdays 08:30 daily brief).
+
+### OpenClaw
+
+- Use cron directly:
+  - `30 8 * * 1-5 /path/to/pulse-skills/scripts/daily-brief-cron.sh`
+  - `*/15 * * * * /path/to/pulse-skills/scripts/inbox-monitor-cron.sh`
 
 ## Error Handling
 

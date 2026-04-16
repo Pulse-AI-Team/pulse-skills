@@ -1,9 +1,9 @@
 ---
 name: pulse
-description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, talk to someone else's agent (friend direct or share link), request/accept agent access, bridge from share token to friend connection, check their agent network, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'talk to their agent', '/v1/agent/message', '/v1/network/request', '/v1/network/accept', '/v1/network/connect', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Pulse."
+description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, generate daily briefings, monitor inbox activity, talk to someone else's agent (friend direct or share link), request/accept agent access, bridge from share token to friend connection, check their agent network, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'daily brief', 'morning brief', 'inbox monitoring', '/v1/briefing', '/v1/conversations', 'talk to their agent', '/v1/agent/message', '/v1/network/request', '/v1/network/accept', '/v1/network/connect', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Pulse."
 metadata:
   author: systemind
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # Aicoo Skills — Share Your AI Agent
@@ -227,6 +227,12 @@ After substantive conversations:
 /loop 30m sync key decisions and updates to Aicoo: search existing notes first, snapshot before major edits, then patch or create notes.
 ```
 
+### Claude Code routine example
+
+```
+/routine auto-sync every weekday at 18:00: search overlap, snapshot before major edits, then patch/create notes and report a concise change log.
+```
+
 ---
 
 ## Capability 6: Talk to Another Agent
@@ -239,6 +245,53 @@ Pulse supports two channels plus handshake/bridge:
 2. Share-link guest channel: `/api/chat/guest-v04`
 3. Access handshake: `/v1/network/request`, `/v1/network/requests`, `/v1/network/accept`
 4. Link bridge: `/v1/network/connect`
+
+---
+
+## Capability 7: Daily Brief
+
+Use briefing endpoints for executive planning:
+
+- `POST /v1/briefing`
+- `POST /v1/briefing/strategies`
+- `POST /v1/briefing/matrix`
+- `GET /v1/briefings`
+
+### Claude Code
+
+```
+/loop 24h generate daily brief with /v1/briefing + strategies + matrix, then return top 3 actions.
+/routine daily-brief every weekday at 08:30: run briefing pipeline and publish concise summary.
+```
+
+### OpenClaw / cron
+
+```bash
+30 8 * * 1-5 /path/to/pulse-skills/scripts/daily-brief-cron.sh >> /tmp/pulse-daily-brief.log 2>&1
+```
+
+---
+
+## Capability 8: Inbox Monitoring
+
+Monitor incoming activity via:
+
+- `GET /v1/conversations?view=all`
+- `GET /v1/network/requests`
+- optional: `GET /v1/os/network`
+
+### Claude Code
+
+```
+/loop 15m monitor inbox via /v1/conversations + /v1/network/requests and report only new urgent items.
+/routine inbox-monitor every 15 minutes: summarize new inbound messages and pending requests.
+```
+
+### OpenClaw / cron
+
+```bash
+*/15 * * * * /path/to/pulse-skills/scripts/inbox-monitor-cron.sh >> /tmp/pulse-inbox-monitor.log 2>&1
+```
 
 ---
 
@@ -279,6 +332,11 @@ Pulse supports two channels plus handshake/bridge:
 | `/network/requests` | GET | List pending requests |
 | `/network/accept` | POST | Accept/reject request |
 | `/network/connect` | POST | Token -> friend + agent link |
+| `/briefing` | POST | Generate daily executive briefing |
+| `/briefing/strategies` | POST | Generate top 3 COO priorities |
+| `/briefing/matrix` | POST | Generate Eisenhower matrix |
+| `/briefings` | GET | Briefing history |
+| `/conversations` | GET | Inbox/conversation monitoring |
 
 ### Guest endpoints (no API key)
 

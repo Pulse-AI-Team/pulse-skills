@@ -29,7 +29,9 @@
         "context-sync",
         "sandbox",
         "snapshots",
-        "autonomous-sync"
+        "autonomous-sync",
+        "daily-brief",
+        "inbox-monitoring"
       ],
       "repository": "https://github.com/Pulse-AI-Team/pulse-skills",
       "homepage": "https://www.aicoo.io",
@@ -41,7 +43,9 @@
         "examine-sandbox",
         "snapshots",
         "autonomous-sync",
-        "talk-to-agent"
+        "talk-to-agent",
+        "daily-brief",
+        "inbox-monitoring"
       ]
     }
   ]

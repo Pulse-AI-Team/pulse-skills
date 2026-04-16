@@ -88,7 +88,7 @@ If you want smaller building blocks instead of one umbrella skill:
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo Aicoo-Team/AICOO-Skills \
-  --path skills/onboarding skills/context-sync skills/share-agent skills/examine-sandbox skills/snapshots skills/autonomous-sync skills/talk-to-agent
+  --path skills/onboarding skills/context-sync skills/share-agent skills/examine-sandbox skills/snapshots skills/autonomous-sync skills/talk-to-agent skills/daily-brief skills/inbox-monitoring
 ```
 
 **Claude Code / OpenClaw / Other:**
@@ -103,6 +103,8 @@ Recommended modular stack:
 - `snapshots`
 - `autonomous-sync`
 - `talk-to-agent`
+- `daily-brief`
+- `inbox-monitoring`
 
 ## Runtime Setup
 
@@ -133,6 +135,12 @@ Recommended modular stack:
 /loop 30m sync any new knowledge to Aicoo
 ```
 
+**Routine (optional):**
+```
+/routine daily-brief every weekday at 08:30
+/routine inbox-monitor every 15 minutes
+```
+
 ### Codex
 
 - Install root skill:
@@ -159,6 +167,8 @@ openclaw hooks enable pulse-sync
 ```bash
 # crontab -e
 0 9 * * * /path/to/aicoo-skills/scripts/pulse-sync.sh /path/to/project
+30 8 * * 1-5 /path/to/aicoo-skills/scripts/daily-brief-cron.sh
+*/15 * * * * /path/to/aicoo-skills/scripts/inbox-monitor-cron.sh
 ```
 
 ## Skill Map (Umbrella + Modules)
@@ -173,6 +183,8 @@ openclaw hooks enable pulse-sync
 | `snapshots` | Save/list/restore note versions |
 | `autonomous-sync` | Auto-sync patterns via hooks/cron/loop |
 | `talk-to-agent` | Talk to another person's Aicoo agent via unified `/v1/agent/message` routing (`alice` human, `alice_coo` agent), request/accept handshake, link bridge, or share link |
+| `daily-brief` | Generate daily executive briefing + strategies + matrix |
+| `inbox-monitoring` | Monitor new conversation activity and pending requests |
 
 ## Mental Model
 
@@ -197,11 +209,15 @@ aicoo-skills/
 |   |-- examine-sandbox/
 |   |-- snapshots/
 |   |-- autonomous-sync/
-|   `-- talk-to-agent/
+|   |-- talk-to-agent/
+|   |-- daily-brief/
+|   `-- inbox-monitoring/
 |-- scripts/
 |   |-- pulse-activator.sh
 |   |-- sync-detector.sh
-|   `-- pulse-sync.sh
+|   |-- pulse-sync.sh
+|   |-- daily-brief-cron.sh
+|   `-- inbox-monitor-cron.sh
 `-- hooks/
     |-- claude-code/
     `-- openclaw/
