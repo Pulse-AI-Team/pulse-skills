@@ -24,7 +24,7 @@ This repository is intentionally designed as **one umbrella entry skill** plus *
 
 - `SKILL.md` (root) = **Aicoo umbrella skill** (all-in-one)
   - Public brand: **Aicoo Skills**
-  - Compatibility skill ID: `pulse` (kept for existing installs/triggers)
+  - Primary skill ID: `aicoo` (legacy alias `pulse` for existing installs/triggers)
 - `skills/*/SKILL.md` = focused skills (`onboarding`, `context-sync`, `share-agent`, etc.)
 
 ## Why this structure exists
@@ -67,7 +67,7 @@ Any agent runtime that supports `skills add` can use this installer path.
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo Aicoo-Team/AICOO-Skills \
   --path . \
-  --name pulse
+  --name aicoo
 ```
 
 **Claude Code:**
@@ -79,7 +79,7 @@ git clone https://github.com/Aicoo-Team/AICOO-Skills.git \
 **OpenClaw:**
 ```bash
 git clone https://github.com/Aicoo-Team/AICOO-Skills.git \
-  ~/.openclaw/skills/pulse
+  ~/.openclaw/skills/aicoo
 ```
 
 **Other agents (manual):**
@@ -129,7 +129,7 @@ Recommended modular stack:
   "hooks": {
     "UserPromptSubmit": [{
       "matcher": "",
-      "hooks": [{"type": "command", "command": "./aicoo-skills/scripts/pulse-activator.sh"}]
+      "hooks": [{"type": "command", "command": "./aicoo-skills/scripts/aicoo-activator.sh"}]
     }],
     "PostToolUse": [{
       "matcher": "Write|Edit",
@@ -158,7 +158,7 @@ Recommended modular stack:
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo Aicoo-Team/AICOO-Skills \
   --path . \
-  --name pulse
+  --name aicoo
 ```
 
 ### OpenClaw
@@ -167,15 +167,15 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
 - Handler source: `hooks/openclaw/handler.ts`
 
 ```bash
-cp -r aicoo-skills/hooks/openclaw ~/.openclaw/hooks/pulse-sync
-openclaw hooks enable pulse-sync
+cp -r aicoo-skills/hooks/openclaw ~/.openclaw/hooks/aicoo-sync
+openclaw hooks enable aicoo-sync
 ```
 
 ### Standalone (cron)
 
 ```bash
 # crontab -e
-0 9 * * * /path/to/aicoo-skills/scripts/pulse-sync.sh /path/to/project
+0 9 * * * /path/to/aicoo-skills/scripts/aicoo-sync.sh /path/to/project
 30 8 * * 1-5 /path/to/aicoo-skills/scripts/daily-brief-cron.sh
 */15 * * * * /path/to/aicoo-skills/scripts/inbox-monitor-cron.sh
 ```
@@ -208,7 +208,7 @@ User intent
 
 ```text
 aicoo-skills/
-|-- SKILL.md                      # umbrella skill (compat ID: pulse)
+|-- SKILL.md                      # umbrella skill (ID: aicoo, alias: pulse)
 |-- CLAUDE.md                     # Claude-focused integration notes
 |-- README.md
 |-- assets/
@@ -224,9 +224,9 @@ aicoo-skills/
 |   |-- daily-brief/
 |   `-- inbox-monitoring/
 |-- scripts/
-|   |-- pulse-activator.sh
+|   |-- aicoo-activator.sh
 |   |-- sync-detector.sh
-|   |-- pulse-sync.sh
+|   |-- aicoo-sync.sh
 |   |-- daily-brief-cron.sh
 |   `-- inbox-monitor-cron.sh
 `-- hooks/

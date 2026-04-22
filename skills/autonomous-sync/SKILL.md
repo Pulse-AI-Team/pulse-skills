@@ -1,6 +1,6 @@
 ---
 name: autonomous-sync
-description: "Use this skill when the user wants to keep their Pulse agent updated automatically, set up scheduled syncs, configure triggers for knowledge updates, use CRON jobs, /loop commands, file watchers, or hooks to push changes to Pulse. Triggers on: 'auto sync', 'keep updated', 'schedule', 'CRON', 'loop', 'trigger', 'watch files', 'auto update', 'periodic sync', 'hook', 'autonomous'."
+description: "Use this skill when the user wants to keep their Aicoo agent updated automatically, set up scheduled syncs, configure triggers for knowledge updates, use CRON jobs, /loop commands, file watchers, or hooks to push changes to Aicoo. Triggers on: 'auto sync', 'keep updated', 'schedule', 'CRON', 'loop', 'trigger', 'watch files', 'auto update', 'periodic sync', 'hook', 'autonomous'."
 metadata:
   author: systemind
   version: "2.0.0"
@@ -8,7 +8,7 @@ metadata:
 
 # Autonomous Sync — Keep Your Agent Updated
 
-Set up automatic triggers to keep Pulse knowledge current.
+Set up automatic triggers to keep Aicoo knowledge current.
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ Use these endpoints in automation:
 
 ```bash
 # daily at 9:00
-0 9 * * * /path/to/pulse-sync.sh >> /tmp/pulse-sync.log 2>&1
+0 9 * * * /path/to/aicoo-sync.sh >> /tmp/aicoo-sync.log 2>&1
 ```
 
 ## Strategy 2: Event-Driven (hooks)
@@ -57,7 +57,7 @@ Add to `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "./pulse-skills/scripts/sync-detector.sh"
+            "command": "./aicoo-skills/scripts/sync-detector.sh"
           }
         ]
       }

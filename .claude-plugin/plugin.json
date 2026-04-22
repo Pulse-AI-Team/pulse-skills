@@ -1,11 +1,11 @@
 {
-  "name": "Pulse Agent Skills",
+  "name": "Aicoo Agent Skills",
   "description": "Share your AI agent securely with anyone. Generate shareable agent links with per-relationship access control, sync context from your files and memory, manage note versions, and keep your agent updated automatically.",
   "version": "1.0.0",
-  "author": "Pulse AI Team",
+  "author": "Aicoo Team",
   "license": "MIT",
   "keywords": [
-    "pulse",
+    "aicoo",
     "agent-sharing",
     "ai-agent",
     "access-control",
@@ -17,6 +17,6 @@
     "daily-brief",
     "inbox-monitoring"
   ],
-  "repository": "https://github.com/Pulse-AI-Team/pulse-skills",
+  "repository": "https://github.com/Aicoo-Team/AICOO-Skills",
   "homepage": "https://www.aicoo.io"
 }

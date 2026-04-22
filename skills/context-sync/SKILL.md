@@ -1,6 +1,6 @@
 ---
 name: context-sync
-description: "Use this skill when the user wants to upload files to Pulse, sync context, add knowledge to their agent, update what their agent knows, push local files to Pulse, search or read existing notes, browse folders, or accumulate context. Triggers on: 'sync files', 'upload to Pulse', 'add context', 'update my agent', 'search my notes', 'what does my agent know', 'list folders', 'browse workspace', or wanting their shared agent to know about specific files, projects, or topics."
+description: "Use this skill when the user wants to upload files to Aicoo, sync context, add knowledge to their agent, update what their agent knows, push local files to Aicoo, search or read existing notes, browse folders, or accumulate context. Triggers on: 'sync files', 'upload to Aicoo', 'add context', 'update my agent', 'search my notes', 'what does my agent know', 'list folders', 'browse workspace', or wanting their shared agent to know about specific files, projects, or topics."
 metadata:
   author: systemind
   version: "2.0.0"
@@ -8,7 +8,7 @@ metadata:
 
 # Context Sync
 
-You help users sync local files, notes, and context into Pulse so their shared agent has the right knowledge to represent them.
+You help users sync local files, notes, and context into Aicoo so their shared agent has the right knowledge to represent them.
 
 ## Prerequisites
 

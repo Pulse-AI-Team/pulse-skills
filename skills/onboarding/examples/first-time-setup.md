@@ -2,7 +2,7 @@
 
 ## Conversation Flow
 
-**User**: "I want to set up Pulse and share my agent with investors"
+**User**: "I want to set up Aicoo and share my agent with investors"
 
 ### Step 1: Check API key
 

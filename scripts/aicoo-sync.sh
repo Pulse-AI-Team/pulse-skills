@@ -1,10 +1,10 @@
 #!/bin/bash
-# Pulse Scheduled Sync Script
+# Aicoo Scheduled Sync Script
 # Use with cron for periodic knowledge sync
-# Usage: ./pulse-sync.sh [project-dir]
+# Usage: ./aicoo-sync.sh [project-dir]
 #
 # Example crontab entry:
-#   0 9 * * * /path/to/pulse-sync.sh /path/to/project >> /tmp/pulse-sync.log 2>&1
+#   0 9 * * * /path/to/aicoo-sync.sh /path/to/project >> /tmp/aicoo-sync.log 2>&1
 
 set -e
 
@@ -35,11 +35,11 @@ fi
 MODIFIED_FILES=$(find . -maxdepth 3 -name "*.md" \
   -not -path "*/node_modules/*" \
   -not -path "*/.git/*" \
-  -newer /tmp/.pulse-last-sync 2>/dev/null | head -20 || true)
+  -newer /tmp/.aicoo-last-sync 2>/dev/null | head -20 || true)
 
 if [ -z "$CHANGES" ] && [ -z "$MODIFIED_FILES" ]; then
   echo "[$(date)] No changes detected, skipping sync"
-  touch /tmp/.pulse-last-sync
+  touch /tmp/.aicoo-last-sync
   exit 0
 fi
 
@@ -74,5 +74,5 @@ if [ "$FILE_COUNT" -gt 0 ]; then
   echo "[$(date)] Synced $FILE_COUNT files: $(echo "$RESULT" | jq -r '.message // .error // "done"')"
 fi
 
-touch /tmp/.pulse-last-sync
+touch /tmp/.aicoo-last-sync
 echo "[$(date)] Sync complete"

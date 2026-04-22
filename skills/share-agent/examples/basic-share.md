@@ -7,9 +7,9 @@ You're a founder preparing for a fundraise. You want to share your AI agent with
 
 ### 1. Sync your investor materials
 ```
-> "Sync all my files in ./investor-materials to Pulse"
+> "Sync all my files in ./investor-materials to Aicoo"
 ```
-The agent reads files from `./investor-materials/` and uploads them to a "Investor Materials" folder on Pulse.
+The agent reads files from `./investor-materials/` and uploads them to a "Investor Materials" folder on Aicoo.
 
 ### 2. Create a share link
 ```

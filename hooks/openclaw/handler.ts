@@ -1,18 +1,18 @@
 /**
- * Pulse Sync Hook for OpenClaw
+ * Aicoo Sync Hook for OpenClaw
  *
- * Injects a Pulse sync reminder during agent bootstrap.
+ * Injects a Aicoo sync reminder during agent bootstrap.
  * Fires on agent:bootstrap event before workspace files are injected.
  */
 
 import type { HookHandler } from 'openclaw/hooks';
 
-const REMINDER_CONTENT = `## Pulse Sync Reminder
+const REMINDER_CONTENT = `## Aicoo Sync Reminder
 
-Your Pulse agent shares knowledge with guests. Keep it current:
+Your Aicoo agent shares knowledge with guests. Keep it current:
 
 **After completing tasks, evaluate:**
-- Decisions or preferences discussed? → Update existing Pulse notes
+- Decisions or preferences discussed? → Update existing Aicoo notes
 - New project context? → Create note in relevant folder
 - Architecture or tech choices? → Sync to Technical/ folder
 - Meeting outcomes? → Create meeting notes

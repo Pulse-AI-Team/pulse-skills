@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./pulse-skills/scripts/pulse-activator.sh"
+            "command": "./aicoo-skills/scripts/aicoo-activator.sh"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./pulse-skills/scripts/sync-detector.sh"
+            "command": "./aicoo-skills/scripts/sync-detector.sh"
           }
         ]
       }

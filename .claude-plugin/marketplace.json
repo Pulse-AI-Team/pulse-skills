@@ -1,28 +1,28 @@
 {
-  "name": "pulse-agent-skills",
+  "name": "aicoo-agent-skills",
   "description": "Share your AI agent securely with anyone. Let others talk to your agent via a link — you control exactly what it can share, create, and edit.",
   "version": "1.0.0",
   "owner": {
-    "name": "Pulse AI Team",
+    "name": "Aicoo Team",
     "url": "https://www.aicoo.io",
     "email": "team@systemind.com"
   },
   "license": "MIT",
-  "repository": "https://github.com/Pulse-AI-Team/pulse-skills",
+  "repository": "https://github.com/Aicoo-Team/AICOO-Skills",
   "homepage": "https://www.aicoo.io",
   "plugins": [
     {
-      "name": "pulse-skills",
+      "name": "aicoo-skills",
       "description": "Share your AI agent with per-relationship access control. Sync context, generate shareable links, manage versions, and keep your agent updated automatically.",
       "version": "1.0.0",
       "author": {
-        "name": "Pulse AI Team",
+        "name": "Aicoo Team",
         "email": "team@systemind.com",
         "url": "https://www.aicoo.io"
       },
       "license": "MIT",
       "keywords": [
-        "pulse",
+        "aicoo",
         "agent-sharing",
         "agent-to-agent",
         "access-control",
@@ -33,7 +33,7 @@
         "daily-brief",
         "inbox-monitoring"
       ],
-      "repository": "https://github.com/Pulse-AI-Team/pulse-skills",
+      "repository": "https://github.com/Aicoo-Team/AICOO-Skills",
       "homepage": "https://www.aicoo.io",
       "source": "./",
       "skills": [

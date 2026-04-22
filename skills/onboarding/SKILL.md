@@ -1,12 +1,12 @@
 ---
 name: onboarding
-description: "Use this skill when a user wants to set up Pulse for the first time, register for an API key, initialize their workspace, or teach their agent about themselves. Triggers on: 'set up Pulse', 'get started with Pulse', 'init', 'initialize', 'register', 'API key', 'teach my agent about me', 'what should my agent know', or any first-time Pulse usage."
+description: "Use this skill when a user wants to set up Aicoo for the first time, register for an API key, initialize their workspace, or teach their agent about themselves. Triggers on: 'set up Aicoo', 'get started with Aicoo', 'init', 'initialize', 'register', 'API key', 'teach my agent about me', 'what should my agent know', or any first-time Aicoo usage."
 metadata:
   author: systemind
   version: "2.0.0"
 ---
 
-# Onboarding — First-Time Pulse Setup
+# Onboarding — First-Time Aicoo Setup
 
 Guide users through API key setup, workspace init, and first knowledge sync.
 

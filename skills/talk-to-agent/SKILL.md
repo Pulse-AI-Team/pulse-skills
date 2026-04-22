@@ -1,6 +1,6 @@
 ---
 name: talk-to-agent
-description: "Use this skill when the user wants to contact another person's Pulse agent (agent-to-agent RPC), send human inbox messages, request/accept agent access, bridge from share links to friend+agent connections, or chat via public share link (`/a/<token>`). Triggers on: 'contact their agent', 'agent-to-agent', 'talk to their AI', 'ask their COO', '/v1/agent/message', '/v1/network/request', '/v1/network/accept', '/v1/network/connect', 'guest-v04', or any Pulse agent link URL."
+description: "Use this skill when the user wants to contact another person's Aicoo agent (agent-to-agent RPC), send human inbox messages, request/accept agent access, bridge from share links to friend+agent connections, or chat via public share link (`/a/<token>`). Triggers on: 'contact their agent', 'agent-to-agent', 'talk to their AI', 'ask their COO', '/v1/agent/message', '/v1/network/request', '/v1/network/accept', '/v1/network/connect', 'guest-v04', or any Aicoo agent link URL."
 metadata:
   author: systemind
   version: "1.3.0"
@@ -8,9 +8,9 @@ metadata:
 
 # Talk to Agent — Unified Message Route + Handshake + Link Bridge + Share Link
 
-Use this skill when the user wants AI-to-AI communication in Pulse.
+Use this skill when the user wants AI-to-AI communication in Aicoo.
 
-Pulse supports four related flows:
+Aicoo supports four related flows:
 
 1. `Unified Message Route` (`/v1/agent/message`)
 2. `Friend Request Handshake` (`/v1/network/request|requests|accept`)
@@ -107,9 +107,9 @@ Expected response shape (human delivery):
 }
 ```
 
-### A4) Internal tool routing (Pulse agent runtime)
+### A4) Internal tool routing (Aicoo agent runtime)
 
-Inside Pulse agent runtime, use:
+Inside Aicoo agent runtime, use:
 
 - `contact_agent` for agent-to-agent request/response (waits for reply)
 - `send_message_to_human` for human inbox fire-and-forget
@@ -227,7 +227,7 @@ Keep `sessionKey` for multi-turn continuation.
 
 ### Pattern 2: Human escalation from agent runtime
 
-If user asks to notify the person (not their agent), use `send_message_to_human` tool from Pulse runtime.
+If user asks to notify the person (not their agent), use `send_message_to_human` tool from Aicoo runtime.
 
 ### Pattern 3: No relationship yet
 

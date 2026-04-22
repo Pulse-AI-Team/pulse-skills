@@ -8,7 +8,7 @@ metadata:
 
 # Snapshots — Note Versioning
 
-Save, list, and restore note versions using Pulse OS endpoints.
+Save, list, and restore note versions using Aicoo OS endpoints.
 
 ## Prerequisites
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Inbox Monitoring Cron Script
 # Example:
-#   */15 * * * * /path/to/pulse-skills/scripts/inbox-monitor-cron.sh >> /tmp/pulse-inbox-monitor.log 2>&1
+#   */15 * * * * /path/to/aicoo-skills/scripts/inbox-monitor-cron.sh >> /tmp/aicoo-inbox-monitor.log 2>&1
 
 set -euo pipefail
 

@@ -27,7 +27,7 @@ Authorization: Bearer $PULSE_API_KEY
 
 Aicoo APIs are now split:
 
-- `/api/v1/os/*` = Pulse OS-native data model (notes, folders, snapshots, memory, todos, network, share)
+- `/api/v1/os/*` = Aicoo OS-native data model (notes, folders, snapshots, memory, todos, network, share)
 - `/api/v1/tools` = non-OS skills (calendar, email, web, messaging, quality, MCP)
 
 `GET /api/v1/tools` now returns tool entries with `namespace` (not `category`).
@@ -38,7 +38,7 @@ Aicoo APIs are now split:
 First-time setup: API key, workspace init, identity files, first sync.
 
 ### 2. context-sync
-Sync local knowledge into Pulse, browse/read/search notes, create/edit notes, snapshot before edits.
+Sync local knowledge into Aicoo, browse/read/search notes, create/edit notes, snapshot before edits.
 
 ### 3. share-agent
 Create/manage/revoke share links and control link-level access.
@@ -158,8 +158,8 @@ After meaningful conversations:
 ### OpenClaw
 
 - Use cron directly:
-  - `30 8 * * 1-5 /path/to/pulse-skills/scripts/daily-brief-cron.sh`
-  - `*/15 * * * * /path/to/pulse-skills/scripts/inbox-monitor-cron.sh`
+  - `30 8 * * 1-5 /path/to/aicoo-skills/scripts/daily-brief-cron.sh`
+  - `*/15 * * * * /path/to/aicoo-skills/scripts/inbox-monitor-cron.sh`
 
 ## Error Handling
 

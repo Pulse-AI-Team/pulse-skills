@@ -1,7 +1,7 @@
 #!/bin/bash
 # Daily Brief Cron Script
 # Example:
-#   30 8 * * 1-5 /path/to/pulse-skills/scripts/daily-brief-cron.sh >> /tmp/pulse-daily-brief.log 2>&1
+#   30 8 * * 1-5 /path/to/aicoo-skills/scripts/daily-brief-cron.sh >> /tmp/aicoo-daily-brief.log 2>&1
 
 set -euo pipefail
 

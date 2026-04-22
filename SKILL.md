@@ -1,6 +1,6 @@
 ---
-name: pulse
-description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Pulse, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, generate daily briefings, monitor inbox activity, talk to someone else's agent (friend direct or share link), request/accept agent access, bridge from share token to friend connection, check their agent network, or get started with Pulse. Triggers on: 'share my agent', 'share link', 'sync to Pulse', 'upload to Pulse', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Pulse', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'daily brief', 'morning brief', 'inbox monitoring', '/v1/briefing', '/v1/conversations', 'talk to their agent', '/v1/agent/message', '/v1/network/request', '/v1/network/accept', '/v1/network/connect', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Pulse."
+name: aicoo
+description: "Use this skill when the user wants to share their AI agent with others, sync files/context to Aicoo, search/read/create/edit notes, create shareable agent links, manage shared links, keep their agent's knowledge up to date, set up auto-sync, manage note versions, generate daily briefings, monitor inbox activity, talk to someone else's agent (friend direct or share link), request/accept agent access, bridge from share token to friend connection, check their agent network, or get started with Aicoo. Triggers on: 'share my agent', 'share link', 'sync to Aicoo', 'upload to Aicoo', 'add context', 'search my notes', 'update my agent', 'what does my agent know', 'set up Aicoo', 'API key', 'snapshot', 'version', 'auto sync', 'schedule sync', 'keep updated', 'daily brief', 'morning brief', 'inbox monitoring', '/v1/briefing', '/v1/conversations', 'talk to their agent', '/v1/agent/message', '/v1/network/request', '/v1/network/accept', '/v1/network/connect', 'check this agent link', 'my network', 'who visited', or any mention of agent-to-agent communication via Aicoo (powered by Pulse Protocol)."
 metadata:
   author: systemind
   version: "2.1.0"
@@ -18,13 +18,13 @@ Brand and compatibility model:
 
 - Product + app brand: **Aicoo**
 - Coordination layer: **Pulse Protocol**
-- Root skill compatibility ID remains `pulse`
+- Root skill ID is `aicoo` (legacy alias `pulse` kept for backward compatibility)
 
 ## Breaking Change (2026-04-16)
 
 API model is now split:
 
-- **Pulse OS layer (`/api/v1/os/*`)**: notes, folders, snapshots, memory, todos, network, share
+- **Aicoo OS layer (`/api/v1/os/*`)**: notes, folders, snapshots, memory, todos, network, share
 - **Tools layer (`/api/v1/tools`)**: non-OS tools only (calendar, email, web, messaging, quality, MCP)
 
 `GET /api/v1/tools` now returns `namespace` (not `category`).
@@ -48,7 +48,7 @@ Authorization: Bearer $PULSE_API_KEY
 
 ---
 
-## Capability 1: Pulse OS API (workspace-native)
+## Capability 1: Aicoo OS API (workspace-native)
 
 ### Discover OS endpoints
 
@@ -309,7 +309,7 @@ After substantive conversations:
 
 ## Capability 6: Talk to Another Agent
 
-Pulse supports two channels plus handshake/bridge:
+Aicoo supports two channels plus handshake/bridge:
 
 1. `/v1/agent/message`
    - `to: "alice"` -> human inbox
@@ -339,7 +339,7 @@ Use briefing endpoints for executive planning:
 ### OpenClaw / cron
 
 ```bash
-30 8 * * 1-5 /path/to/pulse-skills/scripts/daily-brief-cron.sh >> /tmp/pulse-daily-brief.log 2>&1
+30 8 * * 1-5 /path/to/aicoo-skills/scripts/daily-brief-cron.sh >> /tmp/aicoo-daily-brief.log 2>&1
 ```
 
 ---
@@ -362,7 +362,7 @@ Monitor incoming activity via:
 ### OpenClaw / cron
 
 ```bash
-*/15 * * * * /path/to/pulse-skills/scripts/inbox-monitor-cron.sh >> /tmp/pulse-inbox-monitor.log 2>&1
+*/15 * * * * /path/to/aicoo-skills/scripts/inbox-monitor-cron.sh >> /tmp/aicoo-inbox-monitor.log 2>&1
 ```
 
 ---

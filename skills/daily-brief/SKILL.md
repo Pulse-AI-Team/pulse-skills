@@ -8,7 +8,7 @@ metadata:
 
 # Daily Brief
 
-Generate an executive daily brief from Pulse context, then derive top strategies and a matrix view.
+Generate an executive daily brief from Aicoo context, then derive top strategies and a matrix view.
 
 ## Prerequisites
 
@@ -101,7 +101,7 @@ Use the provided script:
 
 ```bash
 # Every weekday at 08:30
-30 8 * * 1-5 /path/to/pulse-skills/scripts/daily-brief-cron.sh >> /tmp/pulse-daily-brief.log 2>&1
+30 8 * * 1-5 /path/to/aicoo-skills/scripts/daily-brief-cron.sh >> /tmp/aicoo-daily-brief.log 2>&1
 ```
 
 Optional envs:

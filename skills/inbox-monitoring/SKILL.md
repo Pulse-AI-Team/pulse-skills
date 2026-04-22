@@ -1,6 +1,6 @@
 ---
 name: inbox-monitoring
-description: "Use this skill when the user wants to monitor Pulse inbox activity, check new conversations/messages, track pending requests, or run periodic inbox checks. Triggers on: 'inbox monitoring', 'monitor inbox', 'new messages', 'pending requests', 'message watch', '收件箱监控', '/v1/conversations', '/v1/network/requests'."
+description: "Use this skill when the user wants to monitor Aicoo inbox activity, check new conversations/messages, track pending requests, or run periodic inbox checks. Triggers on: 'inbox monitoring', 'monitor inbox', 'new messages', 'pending requests', 'message watch', '收件箱监控', '/v1/conversations', '/v1/network/requests'."
 metadata:
   author: systemind
   version: "1.0.0"
@@ -8,7 +8,7 @@ metadata:
 
 # Inbox Monitoring
 
-Monitor incoming communication in Pulse and surface what needs action.
+Monitor incoming communication in Aicoo and surface what needs action.
 
 ## Prerequisites
 
@@ -65,7 +65,7 @@ Use `/loop` or `/routine`.
 ### `/loop` example
 
 ```
-/loop 15m monitor my Pulse inbox using /v1/conversations?view=all and /v1/network/requests; report only new items since last check and recommended replies.
+/loop 15m monitor my Aicoo inbox using /v1/conversations?view=all and /v1/network/requests; report only new items since last check and recommended replies.
 ```
 
 ### `/routine` example
@@ -80,7 +80,7 @@ Use the provided script:
 
 ```bash
 # Every 15 minutes
-*/15 * * * * /path/to/pulse-skills/scripts/inbox-monitor-cron.sh >> /tmp/pulse-inbox-monitor.log 2>&1
+*/15 * * * * /path/to/aicoo-skills/scripts/inbox-monitor-cron.sh >> /tmp/aicoo-inbox-monitor.log 2>&1
 ```
 
 Optional envs:
