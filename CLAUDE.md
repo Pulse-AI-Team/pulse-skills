@@ -25,6 +25,14 @@ TOKEN="$(scripts/aicoo-auth.sh)"   # or: node scripts/aicoo-token.mjs
 curl -s "https://www.aicoo.io/api/v1/os/status" -H "Authorization: Bearer $TOKEN"
 ```
 
+For onboarding and Windows, prefer the shell-independent helper; it resolves
+the same credential without printing or exporting it:
+
+```text
+node scripts/aicoo-request.mjs GET os/status
+node scripts/aicoo-request.mjs POST init
+```
+
 OAuth tokens carry explicit scopes (`os.notes:*`, `os.todos:*`, `os.share:*`, `agent.message:send`, …). A `403 insufficient_scope` response means re-run the login to grant the missing scope.
 
 ## API Model (Breaking Change: 2026-04-16)

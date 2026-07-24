@@ -4,30 +4,32 @@
 
 **User**: "I want to set up Aicoo and share my agent with investors"
 
-### Step 1: Check API key
+### Step 1: Sign in with Aicoo
 
 ```bash
-echo "${AICOO_API_KEY:-$PULSE_API_KEY:+Key is set}" || echo "No key found"
+node scripts/aicoo-login.mjs
 ```
 
-### Step 2: User exports key
+Interactive users should use OAuth. Only CI/cron environments without a browser
+should use an API key:
 
 ```bash
 export AICOO_API_KEY=aicoo_sk_live_abc123...
+# PowerShell: $env:AICOO_API_KEY="aicoo_sk_live_abc123..."
 ```
 
-### Step 3: Initialize workspace
+### Step 2: Initialize workspace and make the first API call
 
 ```bash
-curl -s -X POST "https://www.aicoo.io/api/v1/init" \
-  -H "Authorization: Bearer $AICOO_API_KEY" | jq .
+node scripts/aicoo-request.mjs POST init
+node scripts/aicoo-request.mjs GET os/status
 ```
 
-### Step 4: Explore and collect context
+### Step 3: Explore and collect context
 
 Ask startup basics (product, team, traction, boundaries), then scan local files.
 
-### Step 5: Create first note (OS endpoint)
+### Step 4: Create first note (OS endpoint)
 
 ```bash
 curl -s -X POST "https://www.aicoo.io/api/v1/os/notes" \
@@ -39,7 +41,7 @@ curl -s -X POST "https://www.aicoo.io/api/v1/os/notes" \
   }' | jq .
 ```
 
-### Step 6: Bulk sync project docs
+### Step 5: Bulk sync project docs
 
 ```bash
 curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
@@ -53,7 +55,7 @@ curl -s -X POST "https://www.aicoo.io/api/v1/accumulate" \
   }' | jq .
 ```
 
-### Step 7: Create investor share link
+### Step 6: Create investor share link
 
 ```bash
 curl -s -X POST "https://www.aicoo.io/api/v1/os/share" \

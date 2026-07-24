@@ -340,13 +340,9 @@ Edit HEARTBEAT.md:
 | `/v1/heartbeat/instructions` | PUT | Update HEARTBEAT.md content |
 | `/v1/heartbeat/status` | GET | Quick status: last run, tier, run count today |
 
-### Planned (not yet implemented)
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/v1/heartbeat/schedule` | GET/POST | Get/set schedule (interval, active hours, weekdays) |
-
-Until schedule API exists, use external cron or Claude Code `/loop`/`/routine`.
+There is no user-configurable heartbeat scheduling API. Use external cron,
+Windows Task Scheduler, or Claude Code `/loop`/`/routine` to call
+`POST /v1/heartbeat/run`.
 
 ---
 

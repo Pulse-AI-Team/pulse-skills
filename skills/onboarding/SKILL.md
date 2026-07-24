@@ -40,8 +40,10 @@ If `~/.aicoo/credentials.json` already exists, skip to 0b. Otherwise:
 
 **Step 1 — locate the login script.** It ships inside this skill pack, in the
 `scripts/` directory next to the `skills/` directory that contains this file.
-Resolve its absolute path. If you're unsure where the pack is installed, find
-it:
+Resolve its absolute path from the loaded skill location. Do not assume a
+Claude-only install directory.
+
+If manual discovery is needed on macOS/Linux:
 
 ```bash
 LOGIN="$(find ~/.claude/plugins ~/.codex ~/.config/skills ~/.local/share ~ \
@@ -49,11 +51,27 @@ LOGIN="$(find ~/.claude/plugins ~/.codex ~/.config/skills ~/.local/share ~ \
 echo "$LOGIN"   # e.g. ~/.claude/plugins/aicoo-skills/scripts/aicoo-login.mjs
 ```
 
+On Windows PowerShell:
+
+```powershell
+$LOGIN = Get-ChildItem `
+  "$HOME\.claude\plugins","$HOME\.codex","$HOME\.config\skills" `
+  -Filter aicoo-login.mjs -File -Recurse -ErrorAction SilentlyContinue |
+  Select-Object -First 1 -ExpandProperty FullName
+$LOGIN
+```
+
 **Step 2 — run it** (it auto-opens the browser and blocks until the user
 finishes; just run it and wait):
 
 ```bash
 node "$LOGIN"
+```
+
+PowerShell uses the same Node script:
+
+```powershell
+node $LOGIN
 ```
 
 **Step 3 — relay the link.** The script prints a `Sign in with Aicoo` URL.
@@ -75,27 +93,35 @@ can't reach this machine — e.g. a hosted Codex/agent runtime): run
 device, and the browser shows a code at `https://www.aicoo.io/auth/cli` that
 they paste back to you. Relay the URL exactly as above.
 
-**Then** resolve the token so every example works (auto-refreshes; re-run on
-401). Use the same pack root you found above:
-
-```bash
-export AICOO_API_KEY="$(bash "$(dirname "$LOGIN")/aicoo-auth.sh")"
-```
+The login stores OAuth credentials; do not ask the user to copy a token or set
+an API-key variable. `aicoo-request.mjs` resolves and refreshes the credential
+for each call on macOS, Linux, and Windows.
 
 Users can revoke anytime at https://www.aicoo.io/settings/connected-apps.
 
 **Only if the browser truly can't be used** (pure CI/cron, no human): fall back
-to a manual API key — https://www.aicoo.io/settings/api-keys →
-`export AICOO_API_KEY=aicoo_sk_live_xxxxxxxx`. Do not offer this first; OAuth is
-the default.
+to a manual API key from https://www.aicoo.io/settings/api-keys. Set
+`AICOO_API_KEY` in the environment (`export AICOO_API_KEY=...` on
+macOS/Linux, `$env:AICOO_API_KEY="..."` in PowerShell). Do not offer this
+first; OAuth is the default.
 
 ### 0b. Initialize workspace
 
+Use the cross-platform request helper beside the login script. It automatically
+uses the stored OAuth session or the `AICOO_API_KEY` fallback:
+
 ```bash
-curl -s -X POST "https://www.aicoo.io/api/v1/init" \
-  -H "Authorization: Bearer $AICOO_API_KEY" | jq .
-curl -s "https://www.aicoo.io/api/v1/os/status" \
-  -H "Authorization: Bearer $AICOO_API_KEY" | jq .
+REQUEST="$(dirname "$LOGIN")/aicoo-request.mjs"
+node "$REQUEST" POST init
+node "$REQUEST" GET os/status
+```
+
+Windows PowerShell:
+
+```powershell
+$REQUEST = Join-Path (Split-Path $LOGIN) "aicoo-request.mjs"
+node $REQUEST POST init
+node $REQUEST GET os/status
 ```
 
 ### 0c. Detect the track
@@ -345,20 +371,18 @@ Next: "check messages" · "daily brief" · "heartbeat"
 
 ## Resume from any step (idempotent)
 
-`$LOGIN` below is the script path you resolved in Phase 0a
-(`.../aicoo-skills/scripts/aicoo-login.mjs`).
+`$LOGIN` and `$REQUEST` below are the script paths resolved in Phase 0.
 
 ```bash
 # Signed in?  → ~/.aicoo/credentials.json exists, or:
 node "$LOGIN" --status
 # Has workspace / memory?
-curl -s "https://www.aicoo.io/api/v1/os/status" -H "Authorization: Bearer $AICOO_API_KEY"
-curl -s -X POST "https://www.aicoo.io/api/v1/os/memory/search" -H "Authorization: Bearer $AICOO_API_KEY" \
-  -H "Content-Type: application/json" -d '{"query":"identity","maxResults":3}'
+node "$REQUEST" GET os/status
+node "$REQUEST" POST os/memory/search '{"query":"identity","maxResults":3}'
 # Has a share link?
-curl -s "https://www.aicoo.io/api/v1/os/share/list" -H "Authorization: Bearer $AICOO_API_KEY"
+node "$REQUEST" GET os/share/list
 # On a team / can invite?
-curl -s "https://www.aicoo.io/api/v1/os/team" -H "Authorization: Bearer $AICOO_API_KEY"
+node "$REQUEST" GET os/team
 ```
 
 Skip any phase already done.
@@ -371,7 +395,7 @@ Skip any phase already done.
 |----------|--------|
 | Not signed in | Run `node "$LOGIN"` (browser) or `node "$LOGIN" --manual` (remote/SSH), and relay the printed URL as a clickable link. Do NOT send the user to register/enter a code. API-key fallback only if no browser at all: https://www.aicoo.io/settings/api-keys |
 | Agent about to open a website / ask for a verification code | Wrong flow — stop and run the login script instead; it handles sign-in |
-| 401 mid-session | Access token expired — re-export `AICOO_API_KEY="$(bash "$(dirname "$LOGIN")/aicoo-auth.sh")"` (auto-refreshes) |
+| 401 mid-session | Run the request again; the helper refreshes OAuth automatically. If refresh fails, re-run `node "$LOGIN"` |
 | 403 insufficient_scope | The login didn't grant that scope — re-run `aicoo-login.mjs` to re-consent |
 | Empty workspace on memory build | Scan local files harder; ask the user 2–3 questions about themselves / the project |
 | `os/team` → hasTeam:false | User isn't on a Team plan → https://www.aicoo.io/settings/team |

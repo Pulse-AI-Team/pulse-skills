@@ -45,6 +45,8 @@ const SCOPES = [
   'os.share:write',
   'os.team:read',
   'os.team:write',
+  'os.heartbeat:read',
+  'os.heartbeat:run',
   'agent.message:send',
 ].join(' ');
 

@@ -8,7 +8,8 @@ Save, list, and restore note versions using Aicoo OS endpoints.
 
 ## Prerequisites
 
-- `AICOO_API_KEY` must be set
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation
 - Base URL: `https://www.aicoo.io/api/v1`
 
 ## API Endpoints

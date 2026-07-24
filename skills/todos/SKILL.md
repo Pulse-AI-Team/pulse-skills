@@ -8,7 +8,9 @@ List, create, edit, complete, and replan todos using Aicoo OS endpoints.
 
 ## Prerequisites
 
-- `AICOO_API_KEY` must be set (falls back to `PULSE_API_KEY`)
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation (`PULSE_API_KEY` remains a
+  legacy fallback)
 - Base URL: `https://www.aicoo.io/api/v1`
 
 ## API Endpoints

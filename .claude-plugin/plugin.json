@@ -1,8 +1,12 @@
 {
-  "name": "Aicoo Agent Skills",
+  "name": "aicoo-skills",
+  "displayName": "Aicoo Agent Skills",
   "description": "Share your AI agent securely with anyone. Generate shareable agent links with per-relationship access control, sync context from your files and memory, manage note versions, and keep your agent updated automatically.",
   "version": "1.0.0",
-  "author": "Aicoo Team",
+  "author": {
+    "name": "Aicoo Team",
+    "url": "https://www.aicoo.io"
+  },
   "license": "MIT",
   "keywords": [
     "aicoo",
