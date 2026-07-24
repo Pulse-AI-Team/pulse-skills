@@ -81,22 +81,26 @@ Common failures:
   account on that server (a preview may use a different database).
 - connection refused / timeout → check `CCD_SERVER_URL` and network.
 - `claude` not found → add `--claude-path "$(which claude)"` to the bridge command.
-- `No conversation found` on restart → a prior crash left a stale session in the spool. Clear the
-  stale spool session state (keep the `.device-id` file) and restart.
+- `No conversation found` on restart → a prior crash left a stale session. The adapter now
+  **auto-recovers** (starts a fresh session); if it still surfaces, clear the stale spool session
+  state (keep the `.device-id` file) and restart.
 
 ---
 
-## Step 4: Set the default route (REQUIRED — or peers can't reach you)
+## Step 4: Verify the default route (usually automatic)
 
-The bridge registers an endpoint + session but does **not** auto-set the default route. Without it,
-anyone targeting your `person_default_runtime` can't find you. Set it from the spool:
+The default route is what makes you reachable — it maps "someone targeting your
+`person_default_runtime`" to this specific endpoint + session. The bridge now **auto-sets it from
+its heartbeat loop** (within ~20s of start). Just verify:
 
 ```bash
 CCD_AICOO=1 CCD_SERVER_URL="$SERVER" CCD_TOKEN="$AICOO_API_KEY" \
-  npm run ccd -- default-route set --spool me.spool
-# verify:
-CCD_AICOO=1 CCD_SERVER_URL="$SERVER" CCD_TOKEN="$AICOO_API_KEY" \
   npm run ccd -- default-route get
+```
+If it's still empty a heartbeat later, set it manually as a fallback:
+```bash
+CCD_AICOO=1 CCD_SERVER_URL="$SERVER" CCD_TOKEN="$AICOO_API_KEY" \
+  npm run ccd -- default-route set --spool me.spool
 ```
 
 ---
@@ -120,5 +124,5 @@ CCD_AICOO=1 CCD_SERVER_URL="$SERVER" CCD_TOKEN="$AICOO_API_KEY" \
 | 1 | Clone/update the bridge, `npm ci` |
 | 2 | Start bridge in background (`www.` host!) — `deviceId` auto |
 | 3 | Confirm `endpointId` + heartbeat in `bridge.log` |
-| 4 | **Set the default route** (`default-route set --spool`) — required to be reachable |
+| 4 | Verify the default route (auto-set by the bridge; `default-route get`) |
 | 5 | Reachable — paired peers can send requests (owner-approved) |
