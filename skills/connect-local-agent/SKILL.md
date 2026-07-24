@@ -28,16 +28,13 @@ If `AICOO_API_KEY` is missing, get one at https://www.aicoo.io/settings/api-keys
 ## Step 1: Get the bridge
 
 ```bash
-if [ ! -d c2c_pull ]; then
-  git clone https://github.com/Aicoo-Team/c2c_pull.git
+if [ ! -d aicoo-local-agent ]; then
+  git clone https://github.com/Aicoo-Team/aicoo-local-agent.git
 fi
-cd c2c_pull && git pull --ff-only 2>/dev/null; npm ci
+cd aicoo-local-agent && git pull --ff-only 2>/dev/null; npm install
 ```
-> The bridge repo is currently private (internal / test use). Once the open-source
-> `@aicoo/local-agent` ships, swap this for the public repo or `npx @aicoo/local-agent`.
-
-If the clone fails with an auth error, the machine lacks access to the private repo — request
-access, or point the skill at a local checkout the user already has.
+The bridge is the open-source **Aicoo Local Agent** (Apache-2.0) — anyone can clone it. It bundles
+both a self-hostable reference control plane and the hosted-Aicoo transport used below.
 
 ---
 
