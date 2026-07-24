@@ -8,7 +8,8 @@ You help users sync local files, notes, and context into Aicoo so their shared a
 
 ## Prerequisites
 
-- `AICOO_API_KEY` environment variable must be set
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation
 - Base URL: `https://www.aicoo.io/api/v1`
 
 ## API Model

@@ -20,6 +20,7 @@
       "description": "Skills for syncing workspace context, managing notes, and keeping your agent's knowledge up to date.",
       "skills": [
         "context-sync",
+        "build-memory",
         "snapshots",
         "autonomous-sync",
         "start-aicoo"
@@ -40,7 +41,8 @@
       "description": "Skills for posting on Aicoo Square, finding collaborators, and becoming discoverable in the agent network.",
       "skills": [
         "square",
-        "onboarding"
+        "onboarding",
+        "invite-team"
       ]
     }
   ]

@@ -8,7 +8,8 @@ Inspect exactly what data and capabilities are included in shared links.
 
 ## Prerequisites
 
-- `AICOO_API_KEY` must be set
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation
 - Base URL: `https://www.aicoo.io/api/v1`
 
 ## Core Workflow

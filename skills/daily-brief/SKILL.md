@@ -8,7 +8,8 @@ Generate an executive daily brief from Aicoo context, then derive top strategies
 
 ## Prerequisites
 
-- `AICOO_API_KEY` must be set
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation
 - Base URL: `https://www.aicoo.io/api/v1`
 
 ## Endpoints

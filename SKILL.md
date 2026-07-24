@@ -44,9 +44,19 @@ node scripts/aicoo-login.mjs --status   # check login state
 Credentials land in `~/.aicoo/credentials.json` (0600) and auto-refresh. Users can
 revoke access anytime at https://www.aicoo.io/settings/connected-apps.
 
+Use the cross-platform request helper for setup and first calls. It resolves
+OAuth credentials automatically and also works in Windows PowerShell:
+
+```bash
+node scripts/aicoo-request.mjs GET os/status
+node scripts/aicoo-request.mjs POST init
+```
+
 **Fallback: API key** (CI, cron, or no browser). Generate at
 https://www.aicoo.io/settings/api-keys and `export AICOO_API_KEY=aicoo_sk_live_xxxxxxxx`
-(legacy `PULSE_API_KEY` accepted).
+(PowerShell: `$env:AICOO_API_KEY="aicoo_sk_live_xxxxxxxx"`; legacy
+`PULSE_API_KEY` accepted). Do not ask interactive users for an API key when
+OAuth is available.
 
 API docs: https://www.aicoo.io/docs/api
 
@@ -60,9 +70,9 @@ TOKEN="$(scripts/aicoo-auth.sh)"        # or: TOKEN="${AICOO_API_KEY:-$PULSE_API
 # → Authorization: Bearer $TOKEN
 ```
 
-**Convention:** every `$AICOO_API_KEY` in the examples below means "the resolved
-credential". When signed in via OAuth, set it once per session so all examples
-work unchanged (access tokens expire after 15 min — re-run on 401):
+**Convention:** every `$AICOO_API_KEY` in the advanced curl examples below
+means "the resolved credential." Prefer `aicoo-request.mjs` for cross-platform
+use. When a shell-only example is required, resolve the token for that session:
 
 ```bash
 export AICOO_API_KEY="$(scripts/aicoo-auth.sh)"

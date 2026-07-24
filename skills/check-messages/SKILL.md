@@ -8,7 +8,8 @@ See all messages people sent to your agent, organized by conversation with conta
 
 ## Prerequisites
 
-- `AICOO_API_KEY` environment variable must be set
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation
 - Base URL: `https://www.aicoo.io/api/v1`
 
 ## Workflow

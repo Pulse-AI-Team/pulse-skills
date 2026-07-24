@@ -85,6 +85,19 @@ Your browser opens, you sign in and approve — done. Credentials are stored in
 `~/.aicoo/credentials.json` and refresh automatically. On a headless/SSH box,
 add `--manual` and paste the code the browser shows.
 
+On Windows PowerShell, run the same Node scripts with Windows paths:
+
+```powershell
+node "$HOME\.claude\plugins\aicoo-skills\scripts\aicoo-login.mjs"
+node "$HOME\.claude\plugins\aicoo-skills\scripts\aicoo-request.mjs" GET os/status
+```
+
+On macOS/Linux, verify the first API call without exporting a token:
+
+```bash
+node ~/.claude/plugins/aicoo-skills/scripts/aicoo-request.mjs GET os/status
+```
+
 <details>
 <summary>Fallback: manual API key (CI, cron, no browser)</summary>
 
@@ -94,7 +107,10 @@ Generate at: https://www.aicoo.io/settings/api-keys
 export AICOO_API_KEY="aicoo_sk_live_xxxxxxxx"
 ```
 
-Add to your shell profile (`~/.zshrc`, `~/.bashrc`) or `.env` for persistence.
+PowerShell: `$env:AICOO_API_KEY="aicoo_sk_live_xxxxxxxx"`.
+
+Add the key to your shell profile or CI secret store for persistence. OAuth is
+the default for interactive users; API keys are for non-interactive automation.
 
 </details>
 

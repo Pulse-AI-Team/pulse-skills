@@ -7,9 +7,6 @@
     "url": "https://www.aicoo.io",
     "email": "team@systemind.com"
   },
-  "license": "MIT",
-  "repository": "https://github.com/Aicoo-Team/AICOO-Skills",
-  "homepage": "https://www.aicoo.io",
   "plugins": [
     {
       "name": "aicoo-skills",
@@ -39,23 +36,25 @@
       "homepage": "https://www.aicoo.io",
       "source": "./",
       "skills": [
-        "onboarding",
-        "discover",
-        "context-sync",
-        "share-agent",
-        "examine-sandbox",
-        "snapshots",
-        "autonomous-sync",
-        "talk-to-agent",
-        "connect-local-agent",
-        "daily-brief",
-        "inbox-monitoring",
-        "start-aicoo",
-        "check-messages",
-        "square",
-        "group-chat",
-        "heartbeat",
-        "todos"
+        "./skills/autonomous-sync",
+        "./skills/build-memory",
+        "./skills/check-messages",
+        "./skills/connect-local-agent",
+        "./skills/context-sync",
+        "./skills/daily-brief",
+        "./skills/discover",
+        "./skills/examine-sandbox",
+        "./skills/group-chat",
+        "./skills/heartbeat",
+        "./skills/inbox-monitoring",
+        "./skills/invite-team",
+        "./skills/onboarding",
+        "./skills/share-agent",
+        "./skills/snapshots",
+        "./skills/square",
+        "./skills/start-aicoo",
+        "./skills/talk-to-agent",
+        "./skills/todos"
       ]
     }
   ]

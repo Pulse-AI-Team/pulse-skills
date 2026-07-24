@@ -8,7 +8,9 @@ Create and manage secure, shareable links to a user's agent.
 
 ## Prerequisites
 
-- `AICOO_API_KEY` must be set; legacy `PULSE_API_KEY` is also accepted
+- Sign in with Aicoo via `scripts/aicoo-login.mjs` (preferred), or set
+  `AICOO_API_KEY` for non-interactive automation; legacy `PULSE_API_KEY` is
+  also accepted
 - Base URL: `https://www.aicoo.io/api/v1`
 - User should sync context first
 - Command examples use `${AICOO_API_KEY:-$PULSE_API_KEY}` for backward compatibility
