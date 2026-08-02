@@ -89,6 +89,9 @@ Make THIS machine's coding agent reachable for live agent-to-agent collaboration
 ### 17. raw-memory
 Enable/manage automatic capture of completed Claude Code / Codex sessions into encrypted, immutable Notes Raw records (`npx @aicoo/raw-memory enable`). Hook-driven — no sync loop. Requires Gitleaks; fails closed. Recovery code is shown once and must never be persisted by the agent.
 
+### 18. compile-identity
+Hand a working session to another agent. Exports the transcript as episode notes via `assets/export/session-export.mjs`, then optionally compiles `AGENT.md` / `POSITIONS.md` / `PROGRESSION.md` / `TOOLS.md` / `ASSETS.md` on top. Verbatim export — folder choice is the access control. Read the measured table in the skill first: the compiled layer is worth ~0–4 points to a capable reader and 43 to the Aicoo guest agent, so for a strong reader the export alone is the answer.
+
 ## API Base URL
 
 ```

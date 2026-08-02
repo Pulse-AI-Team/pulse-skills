@@ -2,6 +2,38 @@
 
 ---
 
+## August 2, 2026 — Compile Identity skill
+
+### Added
+- **`compile-identity` skill** — hand a working session to another agent. Exports the
+  transcript as one note per user turn (`CHATS.md` index + `chats/*.md`) via the bundled
+  `assets/export/session-export.mjs`, then optionally compiles five files on top:
+  `AGENT.md` (read order + link policy), `POSITIONS.md` (current / superseded / open,
+  each with `confidence` and `source`), `PROGRESSION.md`, `TOOLS.md`, `ASSETS.md`.
+- **`assets/export/session-export.mjs`** ships with the pack, plus its Node test suite.
+  Exports verbatim — tool inputs and outputs in full, nothing redacted; folder choice is
+  the access control. Recovers messages the user sent mid-turn, which live only in the
+  transcript's queue log and are silently dropped by any exporter that reads only `user`
+  entries.
+- Root `SKILL.md` gains **Capability 16: Compile Identity**; registered in
+  `marketplace.json`, `plugin.json` keywords, `skills.sh.json` (Knowledge Management),
+  `CLAUDE.md`, and the README skill map.
+
+### Notes
+- The skill leads with a measured table rather than a recommendation, because the honest
+  answer is usually *don't compile*. On one 63-hour session, 100 pre-registered questions,
+  blind-graded with slot-swap verification: a capable external reader scored **95–96 on
+  the raw export and 95–100 with the compiled layer** (Opus 5 +4, Sonnet 5 +0, Fable 5 +3;
+  19 divergences pooled, 13–6, sign test p = 0.17). The Aicoo guest agent behind the share
+  link went **16 → 59**. Compile for weak readers; otherwise share the link and stop.
+- Documented limits that cost real experiment time: a session that analyses itself cannot
+  be its own control; a reader's self-report of what it retrieved is evidence, not ground
+  truth; anything the subject can read is part of the stimulus, identifiers included; and
+  reading a `/shared/` page programmatically desynchronises on CJK content unless the RSC
+  `T<hexlen>` rows are parsed by **byte** length.
+
+---
+
 ## August 2, 2026 — Raw Memory skill
 
 ### Added

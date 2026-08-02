@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "Agent Networking",
-      "description": "Skills for connecting your AI agent with other people and agents — share links, discovery, messaging, and group coordination.",
+      "description": "Skills for connecting your AI agent with other people and agents \u2014 share links, discovery, messaging, and group coordination.",
       "skills": [
         "aicoo",
         "share-agent",
@@ -23,12 +23,13 @@
         "snapshots",
         "autonomous-sync",
         "start-aicoo",
-        "raw-memory"
+        "raw-memory",
+        "compile-identity"
       ]
     },
     {
       "title": "Agent Autonomy",
-      "description": "Skills for proactive agent behavior — heartbeat loops, daily briefings, inbox monitoring, and task management.",
+      "description": "Skills for proactive agent behavior \u2014 heartbeat loops, daily briefings, inbox monitoring, and task management.",
       "skills": [
         "heartbeat",
         "daily-brief",

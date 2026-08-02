@@ -184,6 +184,7 @@ One umbrella skill + modular sub-skills:
 | `heartbeat` | Autonomous agent loop — proactive actions on a cadence |
 | `todos` | Task management integrated with agent workflows |
 | `raw-memory` | Enable/manage automatic encrypted session capture (Claude Code/Codex → Notes Raw) |
+| `compile-identity` | Hand a session to another agent — export as episodes, then compile POSITIONS and friends |
 
 ---
 
@@ -309,7 +310,11 @@ aicoo-skills/
 |   |-- group-chat/
 |   |-- heartbeat/
 |   |-- todos/
-|   `-- raw-memory/              # automatic encrypted session capture
+|   |-- raw-memory/              # automatic encrypted session capture
+|   `-- compile-identity/        # session handoff: export + compiled positions layer
+|-- assets/
+|   `-- export/
+|       `-- session-export.mjs   # transcript -> episode notes
 |-- scripts/
 |   |-- aicoo-activator.sh
 |   |-- sync-detector.sh

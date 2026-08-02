@@ -656,6 +656,34 @@ See `skills/raw-memory/SKILL.md` for the full workflow and troubleshooting.
 
 ---
 
+## Capability 16: Compile Identity (hand a session to another agent)
+
+Turn a working session into a folder another agent can read and act on: export the
+transcript as episodes, then write the five compiled files — `AGENT.md` (read order),
+`POSITIONS.md` (what is currently held vs. overruled), `PROGRESSION.md`, `TOOLS.md`,
+`ASSETS.md`.
+
+```bash
+node assets/export/session-export.mjs --layout episodes --folder "Agents/<name>"
+```
+
+**Check whether the compiled layer is worth writing before you write it.** Measured on
+one 63-hour session, 100 pre-registered questions, blind-graded:
+
+| Reader | export only | + compiled layer |
+|---|---|---|
+| A capable agent that fetches and reads the folder itself | 95–96 | 95–100 |
+| The Aicoo guest agent behind the share link | 16 | 59 |
+
+For a capable reader the export alone is enough — compile when the reader is weak, when
+it cannot hold the whole transcript, or when the positions must survive without the
+reasoning that produced them. Otherwise share the link and stop.
+
+See `skills/compile-identity/SKILL.md` for the file formats, the evaluation method, and
+the known limits.
+
+---
+
 ## Security Rules
 
 - Never expose `AICOO_API_KEY` or legacy `PULSE_API_KEY`
