@@ -44,8 +44,9 @@ What happens, and what you must do:
 1. **Browser authorization** (when no API key env var is set): the CLI prints
    `Open this URL to authorize Raw Memory:` followed by a URL on stderr, and tries to
    auto-open the browser. **Relay that URL to the user as a clickable link** — the
-   auto-open can fail. The user approves in the browser; the CLI polls for up to 10 minutes.
-   Do NOT send the user to register elsewhere or hunt for an API key.
+   auto-open can fail. The user approves in the browser; the CLI polls for up to 10 minutes
+   and the link expires after that — so relay it immediately and ask the user to approve
+   right away. Do NOT send the user to register elsewhere or hunt for an API key.
 2. **On success** the CLI prints one line of JSON on stdout:
 
    ```json
@@ -108,6 +109,8 @@ curl -X DELETE "https://www.aicoo.io/api/v1/raw-memory/devices/{deviceId}" \
 | Enable fails, `gitleaks` not found | Install Gitleaks (`brew install gitleaks`), re-run `enable` |
 | `Raw Memory collector belongs to another account` | Device was enrolled under a different Aicoo account — run `disable` first, or sign in as the original account |
 | Browser never opens | Use the URL the CLI printed; on headless boxes export `AICOO_API_KEY` and re-run |
+| Authorization link expired | Pairing links are single-use with a ~10-minute window — relay the URL the moment it prints and have the user approve right away; re-run `enable` for a fresh link |
+| Enable fails in a sandboxed agent (e.g. Codex): network blocked, or `EACCES` on `~/.npm` | Sandbox restrictions, not this machine. Run from a normal terminal, or allow network and point npm's cache inside the workspace: `npm_config_cache=./.npm-cache npx @aicoo/raw-memory enable` |
 | A session didn't upload | Fail-closed by design (redaction/encryption/signing failed), or the retry queue is backing off — check `status`, don't force anything |
 | Codex sessions not captured | Hook not trusted yet — run `/hooks` in Codex and approve it |
 | No Raw Memory card in Settings | Deployment may be behind; the CLI path above still works |
