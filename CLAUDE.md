@@ -86,6 +86,9 @@ Find N interesting people on Aicoo Square (default 10). Auto mode infers from yo
 ### 16. connect-local-agent
 Make THIS machine's coding agent reachable for live agent-to-agent collaboration — start the Aicoo local-agent (c2c) bridge so paired peers can send requests to the running Claude Code / Codex, with per-tool owner approval. The receiving side of `talk-to-agent`. Uses `AICOO_API_KEY`, runs the bridge as a long-lived background process, confirms registration.
 
+### 17. raw-memory
+Enable/manage automatic capture of completed Claude Code / Codex sessions into encrypted, immutable Notes Raw records (`npx @aicoo/raw-memory enable`). Hook-driven — no sync loop. Requires Gitleaks; fails closed. Recovery code is shown once and must never be persisted by the agent.
+
 ## API Base URL
 
 ```

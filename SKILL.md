@@ -632,6 +632,30 @@ Returns: full `session` metadata + `messages[]` array (id, role, content, create
 
 ---
 
+## Capability 15: Raw Memory (automatic session capture)
+
+Enable and manage the **Raw Memory collector** — automatic capture of completed Claude Code /
+Codex sessions into redacted, client-encrypted, immutable **Notes Raw** records.
+
+One-time setup (browser authorization; requires Node 18+ and Gitleaks on `PATH`):
+
+```bash
+npx @aicoo/raw-memory enable
+```
+
+`enable` enrolls the device, stores keys in the OS credential store, and installs
+`SessionEnd` hooks — after that, uploads are fully automatic (redact → encrypt → sign →
+queue → upload, fail-closed). Manage with `status` / `disable` / `recovery-code`; devices
+are also visible under **Settings → Integrations → Raw Memory** and via
+`GET /api/v1/raw-memory/devices`.
+
+First enrollment prints a **recovery code**: show it to the user once, tell them to store it
+off-machine, and never persist it anywhere.
+
+See `skills/raw-memory/SKILL.md` for the full workflow and troubleshooting.
+
+---
+
 ## Security Rules
 
 - Never expose `AICOO_API_KEY` or legacy `PULSE_API_KEY`

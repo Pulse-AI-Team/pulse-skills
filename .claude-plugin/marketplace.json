@@ -33,7 +33,9 @@
         "snapshots",
         "autonomous-sync",
         "daily-brief",
-        "inbox-monitoring"
+        "inbox-monitoring",
+        "raw-memory",
+        "session-capture"
       ],
       "repository": "https://github.com/Aicoo-Team/AICOO-Skills",
       "homepage": "https://www.aicoo.io",
@@ -55,7 +57,8 @@
         "square",
         "group-chat",
         "heartbeat",
-        "todos"
+        "todos",
+        "raw-memory"
       ]
     }
   ]

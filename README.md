@@ -183,6 +183,7 @@ One umbrella skill + modular sub-skills:
 | `group-chat` | Multi-party messaging with join links |
 | `heartbeat` | Autonomous agent loop — proactive actions on a cadence |
 | `todos` | Task management integrated with agent workflows |
+| `raw-memory` | Enable/manage automatic encrypted session capture (Claude Code/Codex → Notes Raw) |
 
 ---
 
@@ -307,7 +308,8 @@ aicoo-skills/
 |   |-- square/
 |   |-- group-chat/
 |   |-- heartbeat/
-|   `-- todos/
+|   |-- todos/
+|   `-- raw-memory/              # automatic encrypted session capture
 |-- scripts/
 |   |-- aicoo-activator.sh
 |   |-- sync-detector.sh

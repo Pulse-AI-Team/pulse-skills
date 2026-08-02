@@ -22,7 +22,8 @@
         "context-sync",
         "snapshots",
         "autonomous-sync",
-        "start-aicoo"
+        "start-aicoo",
+        "raw-memory"
       ]
     },
     {

@@ -2,6 +2,14 @@
 
 ---
 
+## August 2, 2026 — Raw Memory skill
+
+### Added
+- **`raw-memory` skill** — enable and manage automatic capture of completed Claude Code / Codex sessions into redacted, client-encrypted, immutable **Notes Raw** records, wrapping the published `@aicoo/raw-memory` CLI (`enable` / `status` / `disable` / `recovery-code`). Covers browser authorization (relay the printed authorize URL as a clickable link; `AICOO_API_KEY` fallback for headless boxes), the Codex `/hooks` trust step, verification via `status` + `GET /api/v1/raw-memory/devices`, and troubleshooting for fail-closed capture. Hard guardrails: the recovery code is shown once and never persisted; no cron/loop jobs — capture is `SessionEnd`-hook-driven.
+- Root `SKILL.md` gains **Capability 15: Raw Memory**; registered in `marketplace.json`, `plugin.json` keywords, `skills.sh.json` (Knowledge Management), `CLAUDE.md`, and the README skill map.
+
+---
+
 ## July 20, 2026 — Onboarding redesign
 
 ### Changed

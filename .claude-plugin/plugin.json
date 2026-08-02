@@ -15,7 +15,8 @@
     "snapshots",
     "autonomous-sync",
     "daily-brief",
-    "inbox-monitoring"
+    "inbox-monitoring",
+    "raw-memory"
   ],
   "repository": "https://github.com/Aicoo-Team/AICOO-Skills",
   "homepage": "https://www.aicoo.io"
