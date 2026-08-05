@@ -1,6 +1,6 @@
 ---
 name: share-agent
-description: "Use this skill when the user wants to share their AI agent with someone, generate a shareable link, require sign-in, allow anonymous access, let others talk to their agent, configure write access for guests, or manage existing shared links. Triggers on: 'share link', 'agent link', 'share my agent', 'let them talk to my AI', 'require sign-in', 'anonymous link', 'write access', 'edit access', 'guest permissions', or wanting to create a link for investors, prospects, partners, or anyone else to interact with their AI assistant."
+description: "Use this skill when the user wants to share their AI agent with someone, generate a shareable link, require sign-in, allow anonymous access, let others talk to their agent, configure write access for guests, or manage existing shared links. Triggers on: 'share link', 'agent link', 'share my agent', 'let them talk to my AI', 'require sign-in', 'anonymous link', 'write access', 'edit access', 'guest permissions', 'notify me when someone uses my link', 'stop the summaries from my shared link', or wanting to create a link for investors, prospects, partners, or anyone else to interact with their AI assistant."
 ---
 # Share Agent
 
@@ -48,9 +48,12 @@ Always report:
 2. Scope and notes/calendar permissions
 3. Expiration
 4. Sign-in requirement
-5. Access is sandboxed
+5. Whether conversation summaries are on
+6. Access is sandboxed
 
 Default behavior: new links require sign-in (`requireSignIn:true`). Only set `requireSignIn:false` when the user explicitly asks for an anonymous public link.
+
+New links do not notify the owner (`summaryNotifications:false`). Only set `summaryNotifications:true` when the user explicitly asks to be told about visitors — otherwise a busy link floods their chat.
 
 ## Parameters
 
@@ -63,6 +66,7 @@ Default behavior: new links require sign-in (`requireSignIn:true`). Only set `re
 | `label` | string | link label |
 | `expiresIn` | `1h` \| `24h` \| `7d` \| `30d` \| `90d` \| `never` | expiration |
 | `requireSignIn` | boolean | Defaults to `true`. If true, `/a/<token>` and `/shared/<token>` require a signed-in Aicoo user. Signed-in guest sessions can track `guestUserId`, `guestName`, `guestUsername`, and `guestEmail`. Set `false` only for anonymous public links. |
+| `summaryNotifications` | boolean | Defaults to `false`. When true, a summary of each guest conversation is pushed to the owner's chat once that session goes idle. Set `true` only when the user asks to be notified about visitors on this link. |
 
 ## Notes Access Matrix
 
@@ -89,7 +93,7 @@ curl -s -H "Authorization: Bearer ${AICOO_API_KEY:-$PULSE_API_KEY}" \
 curl -s -X PATCH "https://www.aicoo.io/api/v1/os/share/{linkId}" \
   -H "Authorization: Bearer ${AICOO_API_KEY:-$PULSE_API_KEY}" \
   -H "Content-Type: application/json" \
-  -d '{"notesAccess":"write","expiresIn":"30d","requireSignIn":true}' | jq .
+  -d '{"notesAccess":"write","expiresIn":"30d","requireSignIn":true,"summaryNotifications":true}' | jq .
 
 # revoke
 curl -s -X DELETE "https://www.aicoo.io/api/v1/os/share/{linkId}" \
